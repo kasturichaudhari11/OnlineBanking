@@ -11,6 +11,7 @@ import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.CheckingTransactionDao;
 import com.onlinebanking.icin.dao.SavingsAccountDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
+import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.SavingsAccount;
 
@@ -30,10 +31,23 @@ class IcinApplicationTests {
 	@Autowired
 	private SavingsTransactionDao stDao;
 	
+	@Autowired
+	private UserDao userDao;
+	
 	@Test
 	void contextLoads() {
 	}
 
+	@Test
+	void checkTablesAreCreated() {
+		
+		assertEquals(0, caDao.count());
+		assertEquals(0, saDao.count());
+		assertEquals(0, ctDao.count());
+		assertEquals(0, stDao.count());
+		assertEquals(0, userDao.count());
+	}
+	
 	@Sql({"/populateAccounts.sql"})
 	@Test
 	void populateAndCountAccounts() {
@@ -64,5 +78,11 @@ class IcinApplicationTests {
 		assertEquals(5, stDao.count());
 	}
 	
+	@Sql({"/populateUsers.sql"})
+	@Test
+	void populateAndCountUsers() {
+	
+		assertEquals(2, userDao.count());
+	}
 	
 }
