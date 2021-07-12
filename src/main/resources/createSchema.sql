@@ -40,7 +40,7 @@ CREATE TABLE `savings_transaction` (
   CONSTRAINT `FK4bt1l2090882974glyn79q2s9` FOREIGN KEY (`savings_account_id`) REFERENCES `savings_account` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
-CREATE TABLE `user_table` (
+--CREATE TABLE `user_table` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `address` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,

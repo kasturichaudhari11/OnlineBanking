@@ -9,6 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.CheckingTransactionDao;
+import com.onlinebanking.icin.dao.RecipientDao;
 import com.onlinebanking.icin.dao.SavingsAccountDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
@@ -34,6 +35,9 @@ class IcinApplicationTests {
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private RecipientDao recDao;
+	
 	@Test
 	void contextLoads() {
 	}
@@ -46,6 +50,7 @@ class IcinApplicationTests {
 		assertEquals(0, ctDao.count());
 		assertEquals(0, stDao.count());
 		assertEquals(0, userDao.count());
+		assertEquals(0, recDao.count());
 	}
 	
 	@Sql({"/populateAccounts.sql"})
@@ -83,6 +88,14 @@ class IcinApplicationTests {
 	void populateAndCountUsers() {
 	
 		assertEquals(2, userDao.count());
+		assertEquals(3, recDao.count());
 	}
+
+//	@Sql({"/populateRecipients.sql"})
+//	@Test
+//	void populateAndCountRecipients() {
+//		
+//		assertEquals(3, recDao.count());
+//	}
 	
 }
