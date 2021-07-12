@@ -1,9 +1,14 @@
 package com.onlinebanking.icin.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class CheckingAccount {
@@ -13,6 +18,9 @@ public class CheckingAccount {
 	private Integer id;
 	private Integer number;
 	private Double balance;
+	
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<CheckingTransaction> checkingTransactionList;
 
 	public CheckingAccount() {
 		super();
