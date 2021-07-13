@@ -38,7 +38,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recipient> recipientList;
-
+    
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub

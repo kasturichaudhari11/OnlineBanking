@@ -22,6 +22,8 @@ public class CheckingAccount {
 	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CheckingTransaction> checkingTransactionList;
 
+	
+	
 	public CheckingAccount() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -8,9 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
+import com.onlinebanking.icin.dao.CheckingCheckBookDao;
+import com.onlinebanking.icin.dao.CheckingCheckBookRequestDao;
 import com.onlinebanking.icin.dao.CheckingTransactionDao;
 import com.onlinebanking.icin.dao.RecipientDao;
 import com.onlinebanking.icin.dao.SavingsAccountDao;
+import com.onlinebanking.icin.dao.SavingsCheckBookDao;
+import com.onlinebanking.icin.dao.SavingsCheckBookRequestDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
@@ -38,6 +42,18 @@ class IcinApplicationTests {
 	@Autowired
 	private RecipientDao recDao;
 	
+	@Autowired
+	private CheckingCheckBookDao ccbDao;
+
+	@Autowired
+	private CheckingCheckBookRequestDao ccbrDao;
+	
+	@Autowired
+	private SavingsCheckBookDao scbDao;
+	
+	@Autowired
+	private SavingsCheckBookRequestDao scbrDao;
+	
 	@Test
 	void contextLoads() {
 	}
@@ -51,6 +67,10 @@ class IcinApplicationTests {
 		assertEquals(0, stDao.count());
 		assertEquals(0, userDao.count());
 		assertEquals(0, recDao.count());
+		assertEquals(0, ccbDao.count());
+		assertEquals(0, ccbrDao.count());
+		assertEquals(0, scbDao.count());
+		assertEquals(0, scbrDao.count());
 	}
 	
 	@Sql({"/populateAccounts.sql"})
@@ -85,17 +105,15 @@ class IcinApplicationTests {
 	
 	@Sql({"/populateUsers.sql"})
 	@Test
-	void populateAndCountUsers() {
+	void populateAndCountUsersAndRecipients() {
 	
 		assertEquals(2, userDao.count());
 		assertEquals(3, recDao.count());
 	}
-
-//	@Sql({"/populateRecipients.sql"})
-//	@Test
-//	void populateAndCountRecipients() {
-//		
-//		assertEquals(3, recDao.count());
-//	}
 	
+//	@Sql({"/populateCheckbooks.sql"})
+//	@Test
+//	void populateAndCountCheckbooks() {
+//	
+//	}
 }
