@@ -17,19 +17,19 @@ public class SavingsCheckBook {
 	private String type;
 
 	@ManyToOne
-	@JoinColumn(name = "checking_account_id")
-	private CheckingAccount checkingAccount;
+	@JoinColumn(name = "savings_account_id")
+	private SavingsAccount savingsAccount;
 
 	public SavingsCheckBook() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public SavingsCheckBook(Integer numberOfPages, String type, CheckingAccount checkingAccount) {
+	public SavingsCheckBook(Integer numberOfPages, String type, SavingsAccount savingsAccount) {
 		super();
 		this.numberOfPages = numberOfPages;
 		this.type = type;
-		this.checkingAccount = checkingAccount;
+		this.savingsAccount = savingsAccount;
 	}
 
 	public Integer getId() {
@@ -56,11 +56,11 @@ public class SavingsCheckBook {
 		this.type = type;
 	}
 
-	public CheckingAccount getCheckingAccount() {
-		return checkingAccount;
+	public SavingsAccount getCheckingAccount() {
+		return savingsAccount;
 	}
 
-	public void setCheckingAccount(CheckingAccount checkingAccount) {
-		this.checkingAccount = checkingAccount;
+	public void setSavingsAccount(SavingsAccount savingsAccount) {
+		this.savingsAccount = savingsAccount;
 	}
 }

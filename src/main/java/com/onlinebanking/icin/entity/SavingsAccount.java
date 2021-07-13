@@ -22,6 +22,9 @@ public class SavingsAccount {
 	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<SavingsTransaction> savingsTransactionList;
 
+	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<SavingsCheckBook> savingsCheckBookList;	
+
 	public SavingsAccount() {
 		super();
 		// TODO Auto-generated constructor stub

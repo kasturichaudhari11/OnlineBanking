@@ -22,7 +22,7 @@ public class SavingsCheckBookRequest {
 	private User authorizer;
 	
     @OneToOne
-    private CheckingAccount checkingAccount;
+    private SavingsAccount savingsAccount;
 
 	public SavingsCheckBookRequest() {
 		super();
@@ -77,11 +77,11 @@ public class SavingsCheckBookRequest {
 		this.authorizer = authorizer;
 	}
 
-	public CheckingAccount getCheckingAccount() {
-		return checkingAccount;
+	public SavingsAccount getSavingsAccount() {
+		return savingsAccount;
 	}
 
-	public void setCheckingAccount(CheckingAccount checkingAccount) {
-		this.checkingAccount = checkingAccount;
+	public void setSavingsAccount(SavingsAccount savingsAccount) {
+		this.savingsAccount = savingsAccount;
 	}
 }
