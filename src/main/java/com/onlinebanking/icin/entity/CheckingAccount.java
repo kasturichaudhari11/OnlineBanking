@@ -23,7 +23,10 @@ public class CheckingAccount {
 	private List<CheckingTransaction> checkingTransactionList;
 
 	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<CheckingCheckBook> checkingCheckBookList;	
+	private List<CheckingCheckbook> checkingCheckbookList;	
+	
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<CheckingCheckbookRequest> checkingCheckbookRequestList;	
 	
 	public CheckingAccount() {
 		super();

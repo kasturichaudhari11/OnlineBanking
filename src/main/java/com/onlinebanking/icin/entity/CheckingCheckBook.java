@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class CheckingCheckBook {
+public class CheckingCheckbook {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +20,12 @@ public class CheckingCheckBook {
 	@JoinColumn(name = "checking_account_id")
 	private CheckingAccount checkingAccount;
 
-	public CheckingCheckBook() {
+	public CheckingCheckbook() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CheckingCheckBook(Integer numberOfPages, String type, CheckingAccount checkingAccount) {
+	public CheckingCheckbook(Integer numberOfPages, String type, CheckingAccount checkingAccount) {
 		super();
 		this.numberOfPages = numberOfPages;
 		this.type = type;

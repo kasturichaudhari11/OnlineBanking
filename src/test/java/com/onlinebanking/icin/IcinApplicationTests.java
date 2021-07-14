@@ -8,13 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
-import com.onlinebanking.icin.dao.CheckingCheckBookDao;
-import com.onlinebanking.icin.dao.CheckingCheckBookRequestDao;
+import com.onlinebanking.icin.dao.CheckingCheckbookDao;
+import com.onlinebanking.icin.dao.CheckingCheckbookRequestDao;
 import com.onlinebanking.icin.dao.CheckingTransactionDao;
 import com.onlinebanking.icin.dao.RecipientDao;
 import com.onlinebanking.icin.dao.SavingsAccountDao;
-import com.onlinebanking.icin.dao.SavingsCheckBookDao;
-import com.onlinebanking.icin.dao.SavingsCheckBookRequestDao;
+import com.onlinebanking.icin.dao.SavingsCheckbookDao;
+import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
@@ -43,16 +43,16 @@ class IcinApplicationTests {
 	private RecipientDao recDao;
 	
 	@Autowired
-	private CheckingCheckBookDao ccbDao;
+	private CheckingCheckbookDao ccbDao;
 
 	@Autowired
-	private CheckingCheckBookRequestDao ccbrDao;
+	private CheckingCheckbookRequestDao ccbrDao;
 	
 	@Autowired
-	private SavingsCheckBookDao scbDao;
+	private SavingsCheckbookDao scbDao;
 	
 	@Autowired
-	private SavingsCheckBookRequestDao scbrDao;
+	private SavingsCheckbookRequestDao scbrDao;
 	
 	@Test
 	void contextLoads() {
@@ -103,17 +103,40 @@ class IcinApplicationTests {
 		assertEquals(5, stDao.count());
 	}
 	
+		
+	@Sql({"/populateCheckbooks.sql"})
+	@Test
+	void populateAndCountCheckbooks() {
+		
+		assertEquals(6, ccbDao.count());
+		assertEquals(6, scbDao.count());
+	}
+	
 	@Sql({"/populateUsers.sql"})
 	@Test
 	void populateAndCountUsersAndRecipients() {
-	
+		
 		assertEquals(2, userDao.count());
 		assertEquals(3, recDao.count());
+		assertEquals(6, ccbrDao.count());
+		assertEquals(4, scbrDao.count());
 	}
 	
-//	@Sql({"/populateCheckbooks.sql"})
 //	@Test
-//	void populateAndCountCheckbooks() {
-//	
+//	void addNewCheckingAccount() {
+//		
+//		Long currentCAcount = caDao.count();
+//		caDao.save(new CheckingAccount(1100110015, 22200.00));
+//		assertEquals(currentCAcount + 1, caDao.count());
 //	}
+	
+
+//	@Sql({"/populateCheckbookRequests.sql"})
+//	@Test
+//	void populateAndCountCheckbookRequests() {
+//		
+//		assertEquals(6, ccbrDao.count());
+//		assertEquals(4, scbrDao.count());
+//	}
+	
 }

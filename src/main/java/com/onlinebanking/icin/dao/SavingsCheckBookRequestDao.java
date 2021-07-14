@@ -2,8 +2,8 @@ package com.onlinebanking.icin.dao;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.onlinebanking.icin.entity.SavingsCheckBookRequest;
+import com.onlinebanking.icin.entity.SavingsCheckbookRequest;
 
-public interface SavingsCheckBookRequestDao extends CrudRepository<SavingsCheckBookRequest, Integer>{
+public interface SavingsCheckbookRequestDao extends CrudRepository<SavingsCheckbookRequest, Integer>{
 
 }

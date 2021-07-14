@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class CheckingCheckBookRequest {
+public class CheckingCheckbookRequest {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,13 @@ public class CheckingCheckBookRequest {
 	@ManyToOne
 	private User authorizer;
 	
-    @OneToOne
+    @ManyToOne
     private CheckingAccount checkingAccount;
 
-	public CheckingCheckBookRequest() {
+    @OneToOne
+    private CheckingCheckbook checkingCheckbook;
+
+	public CheckingCheckbookRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
