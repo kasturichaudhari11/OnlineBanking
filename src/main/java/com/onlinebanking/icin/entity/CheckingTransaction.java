@@ -30,17 +30,16 @@ public class CheckingTransaction {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public CheckingTransaction(Integer id, Date date, String description, String type, String status, Double amount,
-			Double availableBalance, CheckingAccount checkingAccount) {
+
+	public CheckingTransaction(Double amount, Double availableBalance, Date date, String description, String status,
+			String type, CheckingAccount checkingAccount) {
 		super();
-		this.id = id;
-		this.date = date;
-		this.description = description;
-		this.type = type;
-		this.status = status;
 		this.amount = amount;
 		this.availableBalance = availableBalance;
+		this.date = date;
+		this.description = description;
+		this.status = status;
+		this.type = type;
 		this.checkingAccount = checkingAccount;
 	}
 

@@ -2,10 +2,11 @@ package com.onlinebanking.icin;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookDao;
@@ -18,8 +19,13 @@ import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
+import com.onlinebanking.icin.entity.CheckingTransaction;
 import com.onlinebanking.icin.entity.SavingsAccount;
+import com.onlinebanking.icin.entity.SavingsTransaction;
+import com.onlinebanking.icin.entity.User;
 import com.onlinebanking.icin.service.AccountService;
+import com.onlinebanking.icin.service.TransactionService;
+import com.onlinebanking.icin.service.UserService;
 
 //@Sql({"/populateAccounts.sql", "/populateTransactions.sql"})
 @SpringBootTest
@@ -57,6 +63,12 @@ class IcinApplicationTests {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private TransactionService transactionService;
 	
 	@Test
 	void contextLoads() {
@@ -152,6 +164,93 @@ class IcinApplicationTests {
 		for (int i = 0; i < numAccountsToAdd; ++i)
 			accountService.createSavingsAccount();
 		assertEquals(currentCAcount + numAccountsToAdd, saDao.count());
+	}
+	
+	@Test
+	void addNewUser() {
+ 
+		Long currentUserCount = userDao.count();
+		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		userService.createUser(user);
+		assertEquals(currentUserCount + 1, userDao.count());
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		userService.createUser(user);
+		assertEquals(currentUserCount + 2, userDao.count());
+	}
+	
+	@Test
+	void addNewCheckingTransaction() {
+		
+		CheckingAccount ca = accountService.createCheckingAccount();
+		ca.setBalance(33333.33);
+		Double amount = 2500.00;
+		Date date = new Date();
+		
+		CheckingTransaction checkingTransaction = new CheckingTransaction(amount, ca.getBalance() + amount, date, "Deposit to Checking Account", "Finished", "Account", ca);
+        transactionService.saveCheckingDepositTransaction(checkingTransaction);
+        
+        checkingTransaction = ctDao.findById((int)(ctDao.count())).get();
+        
+        assertEquals((Double)(33333.33 + amount), checkingTransaction.getAvailableBalance());
+        assertEquals((Double)(amount), checkingTransaction.getAmount());
+	}
+	
+	@Test
+	void addNewSavingsTransaction() {
+		
+		SavingsAccount sa = accountService.createSavingsAccount();
+		sa.setBalance(33333.33);
+		Double amount = 2500.00;
+		Date date = new Date();
+		
+		SavingsTransaction savingsTransaction = new SavingsTransaction(amount, sa.getBalance() + amount, date, "Deposit to Checking Account", "Finished", "Account", sa);
+		transactionService.saveSavingsDepositTransaction(savingsTransaction);
+		
+		savingsTransaction = stDao.findById((int)(stDao.count())).get();
+		
+		assertEquals((Double)(33333.33 + amount), savingsTransaction.getAvailableBalance());
+		assertEquals((Double)(amount), savingsTransaction.getAmount());
+	}
+	
+	@Test
+	void depositToCheckingAccount() {
+
+		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		userService.createUser(user);
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		userService.createUser(user);
+		
+		user = userDao.findByUsername("username2");
+		Double balance = user.getCheckingAccount().getBalance();
+		
+		accountService.deposit("Checking", 200.00, "username2");		
+		user = userDao.findByUsername("username2");		
+		assertEquals((Double)(balance + 200.0), (Double)user.getCheckingAccount().getBalance());
+
+		accountService.deposit("Checking", 500.00, "username2");		
+		user = userDao.findByUsername("username2");		
+		assertEquals((Double)(balance + 200.0 + 500.00), (Double)user.getCheckingAccount().getBalance());
+	}
+	
+	
+	@Test
+	void depositToSavingsAccount() {
+		
+		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		userService.createUser(user);
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		userService.createUser(user);
+		
+		user = userDao.findByUsername("username2");
+		Double balance = user.getSavingsAccount().getBalance();
+		
+		accountService.deposit("Savings", 200.00, "username2");		
+		user = userDao.findByUsername("username2");		
+		assertEquals((Double)(balance + 200.0), (Double)user.getSavingsAccount().getBalance());
+		
+		accountService.deposit("Savings", 500.00, "username2");		
+		user = userDao.findByUsername("username2");		
+		assertEquals((Double)(balance + 200.0 + 500.00), (Double)user.getSavingsAccount().getBalance());
 	}
 	
 	

@@ -1,12 +1,18 @@
 package com.onlinebanking.icin.service;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.SavingsAccountDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
+import com.onlinebanking.icin.entity.CheckingTransaction;
 import com.onlinebanking.icin.entity.SavingsAccount;
+import com.onlinebanking.icin.entity.SavingsTransaction;
+import com.onlinebanking.icin.entity.User;
 
 @Service
 public class AccountService {
@@ -17,7 +23,13 @@ public class AccountService {
 	private CheckingAccountDao checkingAccountDao;
 		
 	@Autowired
-	private SavingsAccountDao savingsAccountDao;
+	private SavingsAccountDao savingsAccountDao;	
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private TransactionService transactionService;
 	
 	private Integer getNextAvailableAccountNumber() {
 		
@@ -39,4 +51,32 @@ public class AccountService {
 		
 		return savingsAccountDao.findByNumber(savingsAccount.getNumber());
 	}
+	
+	public void deposit(String accountType, double amount, String username) {
+        User user = userService.findByUsername(username);
+
+        if (accountType.equalsIgnoreCase("Checking")) {
+System.out.println("Checking account deposit of "+user.getUsername());
+        	CheckingAccount checkingAccount = user.getCheckingAccount();
+        	System.out.println("Original balance: "+checkingAccount.getBalance());
+            checkingAccount.setBalance(checkingAccount.getBalance() + amount);
+            System.out.println("Updated balance: "+checkingAccount.getBalance());
+            checkingAccountDao.save(checkingAccount);
+
+            Date date = new Date();
+            CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Deposit to Checking Account", "Finished", "Account", checkingAccount);
+            transactionService.saveCheckingDepositTransaction(checkingTransaction);
+            System.out.println("Transaction completed.");
+
+        } else if (accountType.equalsIgnoreCase("Savings")) {
+        	
+            SavingsAccount savingsAccount = user.getSavingsAccount();
+            savingsAccount.setBalance(savingsAccount.getBalance() + amount);
+            savingsAccountDao.save(savingsAccount);
+
+            Date date = new Date();
+            SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Deposit to Checking Account", "Finished", "Account", savingsAccount);
+            transactionService.saveSavingsDepositTransaction(savingsTransaction);
+        }
+    }
 }

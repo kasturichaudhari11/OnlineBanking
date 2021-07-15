@@ -31,16 +31,15 @@ public class SavingsTransaction {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SavingsTransaction(Integer id, Date date, String description, String type, String status, Double amount,
-			Double availableBalance, SavingsAccount savingsAccount) {
+	public SavingsTransaction(Double amount, Double availableBalance, Date date, String description, String status,
+			String type, SavingsAccount savingsAccount) {
 		super();
-		this.id = id;
-		this.date = date;
-		this.description = description;
-		this.type = type;
-		this.status = status;
 		this.amount = amount;
 		this.availableBalance = availableBalance;
+		this.date = date;
+		this.description = description;
+		this.status = status;
+		this.type = type;
 		this.savingsAccount = savingsAccount;
 	}
 

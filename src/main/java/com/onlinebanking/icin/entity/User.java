@@ -45,8 +45,7 @@ public class User {
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email, String phone,
-			String address, String role, boolean enabled, CheckingAccount checkingAccount,
-			SavingsAccount savingsAccount) {
+			String address, String role, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -57,8 +56,6 @@ public class User {
 		this.address = address;
 		this.role = role;
 		this.enabled = enabled;
-		this.checkingAccount = checkingAccount;
-		this.savingsAccount = savingsAccount;
 	}
 
 	public Integer getUserId() {
