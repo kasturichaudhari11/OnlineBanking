@@ -312,10 +312,10 @@ class IcinApplicationTests {
 	@Test
 	void checkingTransactionListUpdate() {
 		
+		Integer ctListSize = transactionService.findCheckingTransactionList("username2").size();
 		User user = userDao.findByUsername("username2");
 		Double balance = user.getCheckingAccount().getBalance();
 		
-		Integer ctListSize = transactionService.findCheckingTransactionList("username2").size();
 		
 		accountService.deposit("Checking", 200.00, "username2");		
 		user = userDao.findByUsername("username2");		

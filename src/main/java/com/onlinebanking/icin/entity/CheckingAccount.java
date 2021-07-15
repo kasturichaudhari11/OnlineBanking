@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 public class CheckingAccount {
 
@@ -19,15 +22,27 @@ public class CheckingAccount {
 	private Integer number;
 	private Double balance;
 	
-	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL)
 	private List<CheckingTransaction> checkingTransactionList;
 
-	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL)
 	private List<CheckingCheckbook> checkingCheckbookList;	
 	
-	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL)
 	private List<CheckingCheckbookRequest> checkingCheckbookRequestList;	
 	
+//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private List<CheckingTransaction> checkingTransactionList;
+//	
+//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private List<CheckingCheckbook> checkingCheckbookList;	
+//	
+//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private List<CheckingCheckbookRequest> checkingCheckbookRequestList;	
+//	
 	public CheckingAccount() {
 		super();
 		// TODO Auto-generated constructor stub
