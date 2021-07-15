@@ -62,4 +62,28 @@ public class SavingsAccount {
 	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
+
+	public List<SavingsTransaction> getSavingsTransactionList() {
+		return savingsTransactionList;
+	}
+
+	public void setSavingsTransactionList(List<SavingsTransaction> savingsTransactionList) {
+		this.savingsTransactionList = savingsTransactionList;
+	}
+
+	public List<SavingsCheckbook> getSavingsCheckbookList() {
+		return savingsCheckbookList;
+	}
+
+	public void setSavingsCheckbookList(List<SavingsCheckbook> savingsCheckbookList) {
+		this.savingsCheckbookList = savingsCheckbookList;
+	}
+
+	public List<SavingsCheckbookRequest> getSavingsCheckbookRequestList() {
+		return savingsCheckbookRequestList;
+	}
+
+	public void setSavingsCheckbookRequestList(List<SavingsCheckbookRequest> savingsCheckbookRequestList) {
+		this.savingsCheckbookRequestList = savingsCheckbookRequestList;
+	}
 }

@@ -56,16 +56,21 @@ public class AccountService {
         User user = userService.findByUsername(username);
 
         if (accountType.equalsIgnoreCase("Checking")) {
-System.out.println("Checking account deposit of "+user.getUsername());
+
+        	System.out.println("Checking account deposit of "+user.getUsername());
         	CheckingAccount checkingAccount = user.getCheckingAccount();
         	System.out.println("Original balance: "+checkingAccount.getBalance());
-            checkingAccount.setBalance(checkingAccount.getBalance() + amount);
+            
+        	checkingAccount.setBalance(checkingAccount.getBalance() + amount);
             System.out.println("Updated balance: "+checkingAccount.getBalance());
+            
             checkingAccountDao.save(checkingAccount);
 
             Date date = new Date();
+            
             CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Deposit to Checking Account", "Finished", "Account", checkingAccount);
-            transactionService.saveCheckingDepositTransaction(checkingTransaction);
+            transactionService.saveCheckingTransaction(checkingTransaction);
+            
             System.out.println("Transaction completed.");
 
         } else if (accountType.equalsIgnoreCase("Savings")) {
@@ -75,8 +80,41 @@ System.out.println("Checking account deposit of "+user.getUsername());
             savingsAccountDao.save(savingsAccount);
 
             Date date = new Date();
-            SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Deposit to Checking Account", "Finished", "Account", savingsAccount);
-            transactionService.saveSavingsDepositTransaction(savingsTransaction);
+            SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Deposit to Savings Account", "Finished", "Account", savingsAccount);
+            transactionService.saveSavingsTransaction(savingsTransaction);
         }
     }
+
+	public void withdraw(String accountType, double amount, String username) {
+		User user = userService.findByUsername(username);
+		
+		if (accountType.equalsIgnoreCase("Checking")) {
+			
+			System.out.println("Checking account withdraw of "+user.getUsername());
+			CheckingAccount checkingAccount = user.getCheckingAccount();
+			System.out.println("Original balance: "+checkingAccount.getBalance());
+			
+			checkingAccount.setBalance(checkingAccount.getBalance() - amount);
+			System.out.println("Updated balance: "+checkingAccount.getBalance());
+			
+			checkingAccountDao.save(checkingAccount);
+			
+			Date date = new Date();
+			
+			CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Withdraw from Checking Account", "Finished", "Account", checkingAccount);
+			transactionService.saveCheckingTransaction(checkingTransaction);
+			
+			System.out.println("Transaction completed.");
+			
+		} else if (accountType.equalsIgnoreCase("Savings")) {
+			
+			SavingsAccount savingsAccount = user.getSavingsAccount();
+			savingsAccount.setBalance(savingsAccount.getBalance() - amount);
+			savingsAccountDao.save(savingsAccount);
+			
+			Date date = new Date();
+			SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Withdraw from Savings Account", "Finished", "Account", savingsAccount);
+			transactionService.saveSavingsTransaction(savingsTransaction);
+		}
+	}
 }

@@ -19,7 +19,7 @@ public class CheckingAccount {
 	private Integer number;
 	private Double balance;
 	
-	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<CheckingTransaction> checkingTransactionList;
 
 	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -63,4 +63,34 @@ public class CheckingAccount {
 		this.balance = balance;
 	}
 
+	public List<CheckingTransaction> getCheckingTransactionList() {
+		return checkingTransactionList;
+	}
+
+	public void setCheckingTransactionList(List<CheckingTransaction> checkingTransactionList) {
+		this.checkingTransactionList = checkingTransactionList;
+	}
+
+	public List<CheckingCheckbook> getCheckingCheckbookList() {
+		return checkingCheckbookList;
+	}
+
+	public void setCheckingCheckbookList(List<CheckingCheckbook> checkingCheckbookList) {
+		this.checkingCheckbookList = checkingCheckbookList;
+	}
+
+	public List<CheckingCheckbookRequest> getCheckingCheckbookRequestList() {
+		return checkingCheckbookRequestList;
+	}
+
+	public void setCheckingCheckbookRequestList(List<CheckingCheckbookRequest> checkingCheckbookRequestList) {
+		this.checkingCheckbookRequestList = checkingCheckbookRequestList;
+	}
+
+	@Override
+	public String toString() {
+		return "CheckingAccount [id=" + id + ", number=" + number + ", balance=" + balance
+				+ ", checkingTransactionList=" + checkingTransactionList + ", checkingCheckbookList="
+				+ checkingCheckbookList + ", checkingCheckbookRequestList=" + checkingCheckbookRequestList + "]";
+	}
 }
