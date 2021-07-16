@@ -32,6 +32,15 @@ public class SavingsCheckbookRequest {
 		// TODO Auto-generated constructor stub
 	}
 
+	public SavingsCheckbookRequest(String dateRequested, String status, SavingsAccount savingsAccount,
+			SavingsCheckbook savingsCheckbook) {
+		super();
+		this.dateRequested = dateRequested;
+		this.status = status;
+		this.savingsAccount = savingsAccount;
+		this.savingsCheckbook = savingsCheckbook;
+	}
+
 	public Integer getId() {
 		return id;
 	}

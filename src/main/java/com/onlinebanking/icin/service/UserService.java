@@ -1,5 +1,7 @@
 package com.onlinebanking.icin.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,4 +44,40 @@ public class UserService {
     	
     	return findUser;
     }
+    
+    public boolean usernameExists(String username) {
+    	
+    	return null != findByUsername(username);
+    	
+    }
+    
+    public boolean emailExists(String email) {
+    	
+    	return null != findByEmail(email);
+    	
+    }
+    
+    public boolean userExists(String username, String email) {
+     
+    	return usernameExists(username) || emailExists(username);
+    }
+    
+    public List<User> findUserList() {
+    	
+        return (List<User>) userDao.findAll();
+    }
+
+    public void enableUser(String username) {
+    	
+        User user = findByUsername(username);
+        user.setEnabled(true);
+        userDao.save(user);
+    }
+
+    public void disableUser(String username) {
+    	
+        User user = findByUsername(username);
+        user.setEnabled(false);
+        userDao.save(user);
+    }    
 }

@@ -31,6 +31,17 @@ public class CheckingCheckbookRequest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public CheckingCheckbookRequest(String dateRequested, String status, CheckingAccount checkingAccount,
+			CheckingCheckbook checkingCheckbook) {
+		super();
+		this.dateRequested = dateRequested;
+		this.status = status;
+		this.checkingAccount = checkingAccount;
+		this.checkingCheckbook = checkingCheckbook;
+	}
+
 
 	public Integer getId() {
 		return id;

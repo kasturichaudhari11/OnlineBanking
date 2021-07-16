@@ -6,4 +6,8 @@ import com.onlinebanking.icin.entity.Recipient;
 
 public interface RecipientDao extends CrudRepository<Recipient, Integer>{
 
+	Recipient findByName(String recipientName);
+
+	void deleteByName(String recipientName);
+
 }

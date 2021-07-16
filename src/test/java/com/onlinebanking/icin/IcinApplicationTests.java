@@ -21,6 +21,7 @@ import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.CheckingTransaction;
+import com.onlinebanking.icin.entity.Recipient;
 import com.onlinebanking.icin.entity.SavingsAccount;
 import com.onlinebanking.icin.entity.SavingsTransaction;
 import com.onlinebanking.icin.entity.User;
@@ -172,17 +173,36 @@ class IcinApplicationTests {
  
 		Long currentUserCount = userDao.count();
 		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
-		userService.createUser(user);
-		assertEquals(currentUserCount + 1, userDao.count());
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
-		userService.createUser(user);
-		assertEquals(currentUserCount + 2, userDao.count());
+		if (userDao.findByUsername("username1") == null)
+		{
+			userService.createUser(user);
+			currentUserCount++;
+		}
+		assertEquals(currentUserCount, (Long)userDao.count());
 
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		if (userDao.findByUsername("username2") == null)
+		{
+			userService.createUser(user);
+			currentUserCount++;
+		}
+		assertEquals(currentUserCount, (Long)userDao.count());
+		
 		user = new User("username3", "password3", "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
-		userService.createUser(user);
+		if (userDao.findByUsername("username3") == null)
+		{
+			userService.createUser(user);
+			currentUserCount++;
+		}
+		assertEquals(currentUserCount, (Long)userDao.count());
+		
 		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
-		userService.createUser(user);
-		assertEquals(currentUserCount + 4, userDao.count());
+		if (userDao.findByUsername("username4") == null)
+		{
+			userService.createUser(user);
+			currentUserCount++;
+		}
+		assertEquals(currentUserCount, (Long)userDao.count());
 	}
 	
 	@Test
@@ -264,9 +284,15 @@ class IcinApplicationTests {
 	void withdrawFromCheckingAccount() {
 
 		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
-		userService.createUser(user);
+		if (userDao.findByUsername("username3") == null)
+		{
+			userService.createUser(user);
+		}
 		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
-		userService.createUser(user);
+		if (userDao.findByUsername("username4") == null)
+		{
+			userService.createUser(user);
+		}
 		
 		user = userDao.findByUsername("username4");
 		CheckingAccount ca = user.getCheckingAccount();
@@ -289,10 +315,16 @@ class IcinApplicationTests {
 	void withdrawFromSavingsAccount() {
 		
 		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
-		userService.createUser(user);
+		if (userDao.findByUsername("username3") == null)
+		{
+			userService.createUser(user);
+		}
 		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
-		userService.createUser(user);
-
+		if (userDao.findByUsername("username4") == null)
+		{
+			userService.createUser(user);
+		}
+		
 		user = userDao.findByUsername("username4");
 		SavingsAccount sa = user.getSavingsAccount();
 		sa.setBalance(3000.0);
@@ -328,6 +360,7 @@ class IcinApplicationTests {
 		
 //		System.out.println(user.getCheckingAccount());
 		
+		assertEquals((int)(ctListSize + 2), transactionService.findCheckingTransactionList("username2").size());
 		assertEquals((int)(ctListSize + 2), user.getCheckingAccount().getCheckingTransactionList().size());
 		assertFalse((int)(ctListSize + 3) == user.getCheckingAccount().getCheckingTransactionList().size());
 	}
@@ -352,6 +385,46 @@ class IcinApplicationTests {
 		assertEquals((Double)(savingsBalance + 100.00), sa.getBalance());
 	}
 	
+	@Test
+	void transferToRecipient() {
+		
+		
+//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		userService.createUser(user);
+//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		userService.createUser(user);
+//	
+//		User user2 = userDao.findByUsername("username1");
+//		CheckingAccount ca2 = user2.getCheckingAccount();
+		User user = userDao.findByUsername("username2");
+		if (user == null) System.out.println("***********No user found.******");
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		userService.createUser(user);
+		user = userDao.findByUsername("username2");
+		CheckingAccount ca = user.getCheckingAccount();
+		SavingsAccount sa = user.getSavingsAccount();
+		ca.setBalance(2000.00);
+		sa.setBalance(20000.00);
+		caDao.save(ca);
+		saDao.save(sa);
+		
+		user = userDao.findByUsername("username2");
+		ca = user.getCheckingAccount();
+		sa = user.getSavingsAccount();
+		Double checkingBalance = ca.getBalance();
+		
+		Recipient recipient = new Recipient("RecpientName", "rec.name@email.com", "6479388478", ca.getNumber().toString(), "Settle splitwise", user);
+		recDao.save(recipient);
+		recipient = recDao.findById(1).get();
+		
+		transactionService.transferToRecipient(recipient, "Checking", 100.00, ca, sa);
+		
+		user = userDao.findByUsername("username2");
+		ca = user.getCheckingAccount();
+
+		assertEquals((Double)(checkingBalance - 100.00), ca.getBalance());
+	}
+//	
 //	@Sql({"/populateCheckbookRequests.sql"})
 //	@Test
 //	void populateAndCountCheckbookRequests() {
