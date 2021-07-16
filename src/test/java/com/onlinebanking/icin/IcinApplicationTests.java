@@ -2,8 +2,10 @@ package com.onlinebanking.icin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +86,7 @@ class IcinApplicationTests {
 	@BeforeEach
 	void createUsers() {
 		
-		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "admin", true);
 		if (userDao.findByUsername("username1") == null)
 		{
 			userService.createUser(user);
@@ -233,8 +235,8 @@ class IcinApplicationTests {
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 		
-		user = new User("username6", "password6", "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "admin", true);
-		if (userDao.findByUsername("username4") == null)
+		user = new User("username6", "password6", "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "customer", true);
+		if (userDao.findByUsername("username6") == null)
 		{
 			userService.createUser(user);
 			currentUserCount++;
@@ -489,6 +491,8 @@ class IcinApplicationTests {
 		
 		assertEquals(initialCcbCount + 1, ccbDao.count());
 		assertEquals(initialCcbrCount + 1, ccbrDao.count());
+	
+		assertFalse(ccr.isRequestApproved());;
 	}
 	
 	@Test
@@ -510,14 +514,84 @@ class IcinApplicationTests {
 		
 		assertEquals(initialCcbCount + 2, scbDao.count());
 		assertEquals(initialCcbrCount + 2, scbrDao.count());
+		
+		assertFalse(scr.isRequestApproved());
+		assertFalse(scr2.isRequestApproved());
 	}
-//	
-//	@Sql({"/populateCheckbookRequests.sql"})
-//	@Test
-//	void populateAndCountCheckbookRequests() {
-//		
-//		assertEquals(6, ccbrDao.count());
-//		assertEquals(4, scbrDao.count());
-//	}
+
+	@Test
+	void approveCheckingCheckbook() {
+		
+		User user = userDao.findByUsername("username3");
+		CheckingAccount ca = user.getCheckingAccount();
 	
+		CheckingCheckbook ccb = checkbookRequestService.createCheckingCheckbook(new CheckingCheckbook(42, "standard", ca));
+		CheckingCheckbookRequest ccr = checkbookRequestService.requestNewCheckingCheckbook(ccb);
+		assertFalse(ccr.isRequestApproved());
+		
+		User unauthorizedUser = userDao.findByUsername("username4");
+		User authorizedUser = userDao.findByUsername("username1");
+		
+		user = userDao.findByUsername("username3");
+		ca = user.getCheckingAccount();
+	
+		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, unauthorizedUser, true);
+		List<CheckingCheckbookRequest> ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
+
+		for (CheckingCheckbookRequest ccbr: ccbrList)
+			assertFalse(ccbr.isRequestApproved());
+		
+		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, authorizedUser, false);
+		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
+		
+		for (CheckingCheckbookRequest ccbr: ccbrList)
+			assertFalse(ccbr.isRequestApproved());
+
+		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, authorizedUser, true);
+		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
+
+		for (CheckingCheckbookRequest ccbr: ccbrList)
+		{
+			assertTrue(ccbr.isRequestApproved());
+			assertEquals(authorizedUser.getUsername(), ccbr.getAuthorizer().getUsername());
+		}
+	}
+
+	@Test
+	void approveSavingsCheckbook() {
+		
+		User user = userDao.findByUsername("username3");
+		SavingsAccount sa = user.getSavingsAccount();
+	
+		SavingsCheckbook ccb = checkbookRequestService.createSavingsCheckbook(new SavingsCheckbook(42, "standard", sa));
+		SavingsCheckbookRequest scr = checkbookRequestService.requestNewSavingsCheckbook(ccb);
+		assertFalse(scr.isRequestApproved());
+		
+		User unauthorizedUser = userDao.findByUsername("username4");
+		User authorizedUser = userDao.findByUsername("username1");
+
+		user = userDao.findByUsername("username3");
+		sa = user.getSavingsAccount();
+	
+		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, unauthorizedUser, true);
+		List<SavingsCheckbookRequest> ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
+
+		for (SavingsCheckbookRequest scbr: ccbrList)
+			assertFalse(scbr.isRequestApproved());
+		
+		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, authorizedUser, false);
+		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
+		
+		for (SavingsCheckbookRequest scbr: ccbrList)
+			assertFalse(scbr.isRequestApproved());
+
+		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, authorizedUser, true);
+		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
+
+		for (SavingsCheckbookRequest scbr: ccbrList)
+		{
+			assertTrue(scbr.isRequestApproved());
+			assertEquals(authorizedUser.getUsername(), scbr.getAuthorizer().getUsername());
+		}
+	}
 }

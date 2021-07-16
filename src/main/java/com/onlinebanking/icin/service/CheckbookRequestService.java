@@ -59,15 +59,20 @@ public class CheckbookRequestService {
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
 			List<CheckingCheckbookRequest> ccrList = ca.getCheckingCheckbookRequestList();
+			System.out.println("checkingBook request approval by "+authorizer.getUsername());
+			System.out.println("checkingBook request list:  "+ccrList);
 			
 			for (CheckingCheckbookRequest ccr: ccrList) {
 				
-				if (ccr.isRequestApproved() && approve) {
+				System.out.println("ProcessingCCR: "+ccr);
+				if (!ccr.isRequestApproved() && approve) {
 					
+					System.out.println("Approved");
 					ccr.setRequestApproved(true);
 					ccr.setAuthorizer(authorizer);
 					ccr.setDateApproved((new Date()).toString());
 					ccr.setStatus("Approved");
+					checkingCheckbookRequestDao.save(ccr);
 				}
 			}
 		}
@@ -75,18 +80,20 @@ public class CheckbookRequestService {
 	
 	public void approveNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer, boolean approve) {
 		
-		if (authorizer.getRole().equals("Admin")) {
+		System.out.println("Authorizer" + authorizer.getUsername() + " role: " + authorizer.getRole());
+		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
 			List<SavingsCheckbookRequest> scrList = sa.getSavingsCheckbookRequestList();
 			
 			for (SavingsCheckbookRequest scr: scrList) {
 				
-				if (scr.isRequestApproved() && approve) {
+				if (!scr.isRequestApproved() && approve) {
 					
 					scr.setRequestApproved(true);
 					scr.setAuthorizer(authorizer);
 					scr.setDateApproved((new Date()).toString());
 					scr.setStatus("Approved");
+					savingsCheckbookRequestDao.save(scr);
 				}
 			}
 		}

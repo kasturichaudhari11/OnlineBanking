@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class SavingsAccount {
@@ -19,13 +21,16 @@ public class SavingsAccount {
 	private Integer number;
 	private Double balance;
 	
-	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL)
 	private List<SavingsTransaction> savingsTransactionList;
 
-	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL)
 	private List<SavingsCheckbook> savingsCheckbookList;	
 	
-	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL)
 	private List<SavingsCheckbookRequest> savingsCheckbookRequestList;	
 
 	public SavingsAccount() {
