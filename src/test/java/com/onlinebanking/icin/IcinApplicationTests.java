@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.Date;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,12 +21,17 @@ import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsTransactionDao;
 import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
+import com.onlinebanking.icin.entity.CheckingCheckbook;
+import com.onlinebanking.icin.entity.CheckingCheckbookRequest;
 import com.onlinebanking.icin.entity.CheckingTransaction;
 import com.onlinebanking.icin.entity.Recipient;
 import com.onlinebanking.icin.entity.SavingsAccount;
+import com.onlinebanking.icin.entity.SavingsCheckbook;
+import com.onlinebanking.icin.entity.SavingsCheckbookRequest;
 import com.onlinebanking.icin.entity.SavingsTransaction;
 import com.onlinebanking.icin.entity.User;
 import com.onlinebanking.icin.service.AccountService;
+import com.onlinebanking.icin.service.CheckbookRequestService;
 import com.onlinebanking.icin.service.TransactionService;
 import com.onlinebanking.icin.service.UserService;
 
@@ -71,6 +77,37 @@ class IcinApplicationTests {
 	
 	@Autowired
 	private TransactionService transactionService;
+	
+	@Autowired
+	private CheckbookRequestService checkbookRequestService;
+
+	@BeforeEach
+	void createUsers() {
+		
+		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		if (userDao.findByUsername("username1") == null)
+		{
+			userService.createUser(user);
+		}
+
+		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		if (userDao.findByUsername("username2") == null)
+		{
+			userService.createUser(user);
+		}
+		
+		user = new User("username3", "password3", "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
+		if (userDao.findByUsername("username3") == null)
+		{
+			userService.createUser(user);
+		}
+		
+		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+		if (userDao.findByUsername("username4") == null)
+		{
+			userService.createUser(user);
+		}
+	}
 	
 	@Test
 	void contextLoads() {
@@ -188,15 +225,15 @@ class IcinApplicationTests {
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 		
-		user = new User("username3", "password3", "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
-		if (userDao.findByUsername("username3") == null)
+		user = new User("username5", "password5", "firstName5", "lastName5", "first5.last5@email.com", "8379433838", "Address5", "admin", true);
+		if (userDao.findByUsername("username5") == null)
 		{
 			userService.createUser(user);
 			currentUserCount++;
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 		
-		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+		user = new User("username6", "password6", "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "admin", true);
 		if (userDao.findByUsername("username4") == null)
 		{
 			userService.createUser(user);
@@ -242,12 +279,12 @@ class IcinApplicationTests {
 	@Test
 	void depositToCheckingAccount() {
 
-		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
-		userService.createUser(user);
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
-		userService.createUser(user);
+//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		userService.createUser(user);
+//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		userService.createUser(user);
 		
-		user = userDao.findByUsername("username2");
+		User user = userDao.findByUsername("username2");
 		Double balance = user.getCheckingAccount().getBalance();
 		
 		accountService.deposit("Checking", 200.00, "username2");		
@@ -263,12 +300,12 @@ class IcinApplicationTests {
 	@Test
 	void depositToSavingsAccount() {
 		
-		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
-		userService.createUser(user);
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
-		userService.createUser(user);
+//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		userService.createUser(user);
+//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		userService.createUser(user);
 		
-		user = userDao.findByUsername("username2");
+		User user = userDao.findByUsername("username2");
 		Double balance = user.getSavingsAccount().getBalance();
 		
 		accountService.deposit("Savings", 200.00, "username2");		
@@ -283,18 +320,18 @@ class IcinApplicationTests {
 	@Test
 	void withdrawFromCheckingAccount() {
 
-		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
-		if (userDao.findByUsername("username3") == null)
-		{
-			userService.createUser(user);
-		}
-		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
-		if (userDao.findByUsername("username4") == null)
-		{
-			userService.createUser(user);
-		}
+//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		if (userDao.findByUsername("username3") == null)
+//		{
+//			userService.createUser(user);
+//		}
+//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		if (userDao.findByUsername("username4") == null)
+//		{
+//			userService.createUser(user);
+//		}
 		
-		user = userDao.findByUsername("username4");
+		User user = userDao.findByUsername("username4");
 		CheckingAccount ca = user.getCheckingAccount();
 		ca.setBalance(2000.0);
 		caDao.save(ca);
@@ -314,18 +351,18 @@ class IcinApplicationTests {
 	@Test
 	void withdrawFromSavingsAccount() {
 		
-		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
-		if (userDao.findByUsername("username3") == null)
-		{
-			userService.createUser(user);
-		}
-		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
-		if (userDao.findByUsername("username4") == null)
-		{
-			userService.createUser(user);
-		}
+//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		if (userDao.findByUsername("username3") == null)
+//		{
+//			userService.createUser(user);
+//		}
+//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		if (userDao.findByUsername("username4") == null)
+//		{
+//			userService.createUser(user);
+//		}
 		
-		user = userDao.findByUsername("username4");
+		User user = userDao.findByUsername("username4");
 		SavingsAccount sa = user.getSavingsAccount();
 		sa.setBalance(3000.0);
 		saDao.save(sa);
@@ -347,7 +384,6 @@ class IcinApplicationTests {
 		Integer ctListSize = transactionService.findCheckingTransactionList("username2").size();
 		User user = userDao.findByUsername("username2");
 		Double balance = user.getCheckingAccount().getBalance();
-		
 		
 		accountService.deposit("Checking", 200.00, "username2");		
 		user = userDao.findByUsername("username2");		
@@ -396,11 +432,11 @@ class IcinApplicationTests {
 //	
 //		User user2 = userDao.findByUsername("username1");
 //		CheckingAccount ca2 = user2.getCheckingAccount();
+//		User user = userDao.findByUsername("username2");
+//		if (user == null) System.out.println("***********No user found.******");
+//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		userService.createUser(user);
 		User user = userDao.findByUsername("username2");
-		if (user == null) System.out.println("***********No user found.******");
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
-		userService.createUser(user);
-		user = userDao.findByUsername("username2");
 		CheckingAccount ca = user.getCheckingAccount();
 		SavingsAccount sa = user.getSavingsAccount();
 		ca.setBalance(2000.00);
@@ -423,6 +459,57 @@ class IcinApplicationTests {
 		ca = user.getCheckingAccount();
 
 		assertEquals((Double)(checkingBalance - 100.00), ca.getBalance());
+	}
+	
+	@Test
+	void requestCheckingCheckbook() {
+		
+//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		if (userDao.findByUsername("username3") == null)
+//		{
+//			userService.createUser(user);
+//		}
+//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		if (userDao.findByUsername("username4") == null)
+//		{
+//			userService.createUser(user);
+//		}
+//		
+		User user = userDao.findByUsername("username3");
+		CheckingAccount ca = user.getCheckingAccount();
+	
+		long initialCcbCount = ccbDao.count();
+		CheckingCheckbook ccb = checkbookRequestService.createCheckingCheckbook(new CheckingCheckbook(42, "standard", ca));
+		
+		long initialCcbrCount = ccbrDao.count();
+		CheckingCheckbookRequest ccr = checkbookRequestService.requestNewCheckingCheckbook(ccb);
+		
+		assertFalse(initialCcbCount == ccbDao.count());
+		assertFalse(initialCcbrCount == ccbrDao.count());
+		
+		assertEquals(initialCcbCount + 1, ccbDao.count());
+		assertEquals(initialCcbrCount + 1, ccbrDao.count());
+	}
+	
+	@Test
+	void requestSavingsCheckbook() {
+		
+		User user = userDao.findByUsername("username3");
+		SavingsAccount ca = user.getSavingsAccount();
+	
+		long initialCcbCount = scbDao.count();
+		SavingsCheckbook scb = checkbookRequestService.createSavingsCheckbook(new SavingsCheckbook(42, "standard", ca));
+		SavingsCheckbook scb2 = checkbookRequestService.createSavingsCheckbook(new SavingsCheckbook(24, "customized", ca));
+		
+		long initialCcbrCount = scbrDao.count();
+		SavingsCheckbookRequest scr = checkbookRequestService.requestNewSavingsCheckbook(scb);
+		SavingsCheckbookRequest scr2 = checkbookRequestService.requestNewSavingsCheckbook(scb2);
+		
+		assertFalse(initialCcbCount == scbDao.count());
+		assertFalse(initialCcbrCount == scbrDao.count());
+		
+		assertEquals(initialCcbCount + 2, scbDao.count());
+		assertEquals(initialCcbrCount + 2, scbrDao.count());
 	}
 //	
 //	@Sql({"/populateCheckbookRequests.sql"})

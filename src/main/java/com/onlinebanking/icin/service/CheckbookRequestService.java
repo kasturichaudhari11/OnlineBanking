@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.onlinebanking.icin.dao.CheckingCheckbookDao;
+import com.onlinebanking.icin.dao.CheckingCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookDao;
+import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.CheckingCheckbook;
 import com.onlinebanking.icin.entity.CheckingCheckbookRequest;
@@ -24,6 +26,12 @@ public class CheckbookRequestService {
 
 	@Autowired
 	SavingsCheckbookDao savingsCheckbookDao;
+	
+	@Autowired
+	CheckingCheckbookRequestDao checkingCheckbookRequestDao;
+	
+	@Autowired
+	SavingsCheckbookRequestDao savingsCheckbookRequestDao;
 
 	public CheckingCheckbook createCheckingCheckbook(CheckingCheckbook checkingCheckbook) {
 
@@ -35,25 +43,26 @@ public class CheckbookRequestService {
 		return savingsCheckbookDao.save(savingsCheckbook);
 	}
 	
-	public CheckingCheckbookRequest requestNewCheckingCheckbook(CheckingAccount ca, CheckingCheckbook ccb) {
+	public CheckingCheckbookRequest requestNewCheckingCheckbook(CheckingCheckbook ccb) {
 		
-		return (new CheckingCheckbookRequest("04-15-2021", "Pending", ca, ccb));
+		CheckingCheckbookRequest ccr = new CheckingCheckbookRequest((new Date()).toString(), "Pending", ccb.getCheckingAccount(), ccb);
+		return checkingCheckbookRequestDao.save(ccr);
 	}
 
-	public SavingsCheckbookRequest requestNewSavingsCheckbook(SavingsAccount sa, SavingsCheckbook scb) {
+	public SavingsCheckbookRequest requestNewSavingsCheckbook(SavingsCheckbook scb) {
 		
-		return (new SavingsCheckbookRequest("04-15-2021", "Pending", sa, scb));
+		return savingsCheckbookRequestDao.save(new SavingsCheckbookRequest((new Date()).toString(), "Pending", scb.getSavingsAccount(), scb));
 	}
 	
-	public void approveNewCheckingCheckbookRequest(CheckingAccount ca, User authorizer) {
+	public void approveNewCheckingCheckbookRequest(CheckingAccount ca, User authorizer, boolean approve) {
 		
-		if (authorizer.getRole().equals("Admin") ) {
+		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
 			List<CheckingCheckbookRequest> ccrList = ca.getCheckingCheckbookRequestList();
 			
 			for (CheckingCheckbookRequest ccr: ccrList) {
 				
-				if (ccr.isRequestApproved()) {
+				if (ccr.isRequestApproved() && approve) {
 					
 					ccr.setRequestApproved(true);
 					ccr.setAuthorizer(authorizer);
@@ -64,15 +73,15 @@ public class CheckbookRequestService {
 		}
 	}
 	
-	public void approveNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer) {
+	public void approveNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer, boolean approve) {
 		
-		if (authorizer.getRole().equals("Admin") ) {
+		if (authorizer.getRole().equals("Admin")) {
 			
 			List<SavingsCheckbookRequest> scrList = sa.getSavingsCheckbookRequestList();
 			
 			for (SavingsCheckbookRequest scr: scrList) {
 				
-				if (scr.isRequestApproved()) {
+				if (scr.isRequestApproved() && approve) {
 					
 					scr.setRequestApproved(true);
 					scr.setAuthorizer(authorizer);

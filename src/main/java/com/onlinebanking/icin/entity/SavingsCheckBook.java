@@ -56,7 +56,7 @@ public class SavingsCheckbook {
 		this.type = type;
 	}
 
-	public SavingsAccount getCheckingAccount() {
+	public SavingsAccount getSavingsAccount() {
 		return savingsAccount;
 	}
 
