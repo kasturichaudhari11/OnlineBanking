@@ -42,7 +42,7 @@ public class RecipientController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String recipientPost(@ModelAttribute("recipient") Recipient recipient, Principal principal) {
+	public String recipientAdd(@ModelAttribute("recipient") Recipient recipient, Principal principal) {
 
 		if (recipientService.findRecipientByName(recipient.getName()) == null) {
 			User user = userService.findByUsername(principal.getName());

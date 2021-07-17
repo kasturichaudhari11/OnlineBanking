@@ -10,6 +10,7 @@ import com.onlinebanking.icin.dao.CheckingCheckbookDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
+import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.CheckingCheckbook;
 import com.onlinebanking.icin.entity.CheckingCheckbookRequest;
@@ -32,6 +33,9 @@ public class CheckbookRequestService {
 	
 	@Autowired
 	SavingsCheckbookRequestDao savingsCheckbookRequestDao;
+	
+	@Autowired
+	UserService userService;
 
 	public CheckingCheckbook createCheckingCheckbook(CheckingCheckbook checkingCheckbook) {
 
@@ -41,6 +45,22 @@ public class CheckbookRequestService {
 	public SavingsCheckbook createSavingsCheckbook(SavingsCheckbook savingsCheckbook) {
 		
 		return savingsCheckbookDao.save(savingsCheckbook);
+	}
+	
+	public CheckingCheckbookRequest requestNewCheckingCheckbook(String type, String pages, String username) {
+
+		User user = userService.findByUsername(username);
+			
+		CheckingCheckbook checkingCheckbook = new CheckingCheckbook(Integer.parseInt(pages), type, user.getCheckingAccount());
+		return requestNewCheckingCheckbook(checkingCheckbook);
+	}
+
+	public SavingsCheckbookRequest requestNewSavingsCheckbook(String type, String pages, String username) {
+	
+		User user = userService.findByUsername(username);
+		
+		SavingsCheckbook savingsCheckbook = new SavingsCheckbook(Integer.parseInt(pages), type, user.getSavingsAccount());
+		return requestNewSavingsCheckbook(savingsCheckbook);
 	}
 	
 	public CheckingCheckbookRequest requestNewCheckingCheckbook(CheckingCheckbook ccb) {

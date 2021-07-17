@@ -25,7 +25,7 @@ public class SavingsCheckbookRequest {
     private SavingsAccount savingsAccount;
 
     @OneToOne
-    private SavingsCheckbook savingsCheckbook;
+    public SavingsCheckbook savingsCheckbook;
     
 	public SavingsCheckbookRequest() {
 		super();
