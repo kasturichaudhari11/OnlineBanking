@@ -1,0 +1,25 @@
+
+.main {
+    margin-top: 70px;
+}
+
+.main-center {
+    margin-top: 30px;
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 40px 40px;
+}
+
+.banner {
+	/* width: 100%; */
+	max-height: 100px;
+}
+
+.banner-text-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  color: rgb(179, 15, 15);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: xx-large;
+}
