@@ -1,10 +1,25 @@
-function ValidateDepositOrWithdraw() {
+function ValidateDeposit() {
 
-	if (document.accountOperationForm.accountType.value == "") {
+	ValidateAccountType(document.depositForm);
+}
+
+function ValidateWithdraw() {
+
+	ValidateAccountType(document.withdrawForm);
+}
+
+function ValidateTransferAccounts() {
+
+	ValidateAccountType(document.transferAccountsForm);
+}
+
+function ValidateAccountType(accountOperationForm) {
+
+	if (accountOperationForm.accountType.value == "") {
 		alert("Please provide your account!");
 
 		name_error.textContent = "Account selection is required!";
-		document.accountOperationForm.accountType.focus();
+		accountOperationForm.accountType.focus();
 		return false;
 	}
 

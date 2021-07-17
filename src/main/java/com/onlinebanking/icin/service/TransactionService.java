@@ -69,7 +69,7 @@ public class TransactionService {
 
             Date date = new Date();
 
-            CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Between account transfer from " + transferFrom + " to " + transferTo, "Transfer", "Finished", checkingAccount);
+            CheckingTransaction checkingTransaction = new CheckingTransaction(-amount, checkingAccount.getBalance(), date, "Between account transfer from " + transferFrom + " to " + transferTo, "Transfer", "Finished", checkingAccount);
             SavingsTransaction savingsTransaction = new SavingsTransaction(amount, savingsAccount.getBalance(), date, "Between account transfer to " + transferTo + " from " + transferFrom, "Transfer", "Finished", savingsAccount);
             checkingTransactionDao.save(checkingTransaction);
             savingsTransactionDao.save(savingsTransaction);
@@ -82,7 +82,7 @@ public class TransactionService {
 
             Date date = new Date();
 
-            SavingsTransaction savingsTransaction = new SavingsTransaction(amount, savingsAccount.getBalance(), date, "Between account transfer from " + transferFrom + " to " + transferTo, "Transfer", "Finished", savingsAccount);
+            SavingsTransaction savingsTransaction = new SavingsTransaction(-amount, savingsAccount.getBalance(), date, "Between account transfer from " + transferFrom + " to " + transferTo, "Transfer", "Finished", savingsAccount);
             CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Between account transfer to " + transferTo + " from " + transferFrom, "Transfer", "Finished", checkingAccount);
             savingsTransactionDao.save(savingsTransaction);
             checkingTransactionDao.save(checkingTransaction);

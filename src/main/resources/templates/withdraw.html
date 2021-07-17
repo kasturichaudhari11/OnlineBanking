@@ -6,7 +6,7 @@
 <div class="container main">
     <div class="row">
         <div class="col-md-6">
-            <form th:action="@{/account/withdraw}" name="accountOperationForm" onsubmit="return(ValidateDepositOrWithdraw());" method="post">
+            <form th:action="@{/account/withdraw}" name="withdrawForm" onsubmit="return(ValidateWithdraw());" method="post">
                 <div class="form-group">
                     <label for="accountType"> Withdrawal account: </label>
                     <select class="form-control" th:value="${accountType}" name="accountType" id="accountType"
