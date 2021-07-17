@@ -15,16 +15,18 @@ public class RecipientService {
 	@Autowired
 	RecipientDao recipientDao;
 
-	public List<Recipient> findRecipientList(Recipient recipient) {
+	public List<Recipient> findRecipientList(String username) {
 
-		String recipientName = recipient.getName();
 		List<Recipient> recipientList = new ArrayList<Recipient>();
 
 		for (Recipient rec : (List<Recipient>) recipientDao.findAll()) {
-			if (rec.getName().equals(recipientName)) {
+			
+			if (rec.getUser().getUsername().equals(username)) {
+				
 				recipientList.add(rec);
 			}
 		}
+		
 		return recipientList;
 	}
 

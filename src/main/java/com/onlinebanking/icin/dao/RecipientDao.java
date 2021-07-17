@@ -9,5 +9,4 @@ public interface RecipientDao extends CrudRepository<Recipient, Integer>{
 	Recipient findByName(String recipientName);
 
 	void deleteByName(String recipientName);
-
 }
