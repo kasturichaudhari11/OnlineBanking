@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookDao;
@@ -83,6 +84,9 @@ class IcinApplicationTests {
 	@Autowired
 	private CheckbookRequestService checkbookRequestService;
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	@BeforeEach
 	void createUsers() {
 		
@@ -98,7 +102,7 @@ class IcinApplicationTests {
 			userService.createUser(user);
 		}
 		
-		user = new User("username3", "password3", "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
+		user = new User("username3", bCryptPasswordEncoder.encode("password3"), "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
 		if (userDao.findByUsername("username3") == null)
 		{
 			userService.createUser(user);
