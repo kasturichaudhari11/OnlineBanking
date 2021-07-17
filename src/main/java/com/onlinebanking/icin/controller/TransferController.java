@@ -3,6 +3,8 @@ package com.onlinebanking.icin.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +23,7 @@ import com.onlinebanking.icin.service.UserService;
 
 @Controller
 @RequestMapping("/transfer")
-public class TransactionController {
+public class TransferController {
 
     @Autowired
     private TransactionService transactionService;
@@ -56,59 +58,25 @@ public class TransactionController {
         return "redirect:/homepage";
     }
     
-    @RequestMapping(value = "/recipient", method = RequestMethod.GET)
-    public String recipient(Model model, Principal principal) {
+
+    @RequestMapping(value = "/toRecipient", method = RequestMethod.GET)
+    public String toSomeoneElse(Model model, Principal principal) {
     	
         List<Recipient> recipientList = recipientService.findRecipientList(principal.getName());
 
-        Recipient recipient = new Recipient();
-
         model.addAttribute("recipientList", recipientList);
-        model.addAttribute("recipient", recipient);
+        model.addAttribute("accountType", "");
 
-        return "recipient";
+        return "toRecipient";
     }
 
-    @RequestMapping(value = "/recipient/add", method = RequestMethod.POST)
-    public String recipientPost(@ModelAttribute("recipient") Recipient recipient, Principal principal) {
-
-    	if (recipientService.findRecipientByName(recipient.getName()) == null)
-    	{
-	        User user = userService.findByUsername(principal.getName());
-	        recipient.setUser(user);
-	        recipientService.saveRecipient(recipient);
-    	}
-
-        return "redirect:/transfer/recipient";
-    }
-
-    @RequestMapping(value = "/recipient/edit", method = RequestMethod.GET)
-    public String recipientEdit(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal) {
-
+    @RequestMapping(value = "/toRecipient", method = RequestMethod.POST)
+    public String toSomeoneElsePost(@ModelAttribute("recipientName") String recipientName, @ModelAttribute("accountType") String accountType, @ModelAttribute("amount") String amount, Principal principal) {
+      
+    	User user = userService.findByUsername(principal.getName());
         Recipient recipient = recipientService.findRecipientByName(recipientName);
-        List<Recipient> recipientList = recipientService.findRecipientList(principal.getName());
+        transactionService.transferToRecipient(recipient, accountType, Double.parseDouble(amount), user.getCheckingAccount(), user.getSavingsAccount());
 
-        model.addAttribute("recipientList", recipientList);
-        model.addAttribute("recipient", recipient);
-
-        return "recipient";
+        return "redirect:/homepage";
     }
-//
-//    @RequestMapping(value = "/recipient/delete", method = RequestMethod.GET)
-//    @Transactional
-//    public String recipientDelete(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal) {
-//
-//        transactionService.deleteRecipientByName(recipientName);
-//
-//        List<Recipient> recipientList = transactionService.findRecipientList(principal);
-//
-//        Recipient recipient = new Recipient();
-//        model.addAttribute("recipient", recipient);
-//        model.addAttribute("recipientList", recipientList);
-//
-//
-//        return "recipient";
-//    }
-    
-    
 }

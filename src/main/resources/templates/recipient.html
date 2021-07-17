@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-6">
             <h3>Recipient Information</h3>
-            <form th:action="@{/transfer/recipient/add}" method="post">
+            <form th:action="@{/recipient/add}" method="post">
                 <input type="hidden" name="id" th:value="${recipient.id}"/>
 
                 <div class="form-group">
@@ -66,12 +66,12 @@
                 <tbody>
                 <tr data-th-each="recipient : ${recipientList}">
                     <td><a data-th-text="${recipient.name}"
-                           th:href="@{/transfer/recipient/edit?recipientName=}+${recipient.name}">...</a></td>
+                           th:href="@{/recipient/edit?recipientName=}+${recipient.name}">...</a></td>
                     <td data-th-text="${recipient.email}">...</td>
                     <td data-th-text="${recipient.phone}">...</td>
                     <td data-th-text="${recipient.accountNumber}">...</td>
                     <td data-th-text="${recipient.description}">...</td>
-                    <td><a th:href="@{/transfer/recipient/delete?recipientName=}+${recipient.name}">delete</a></td>
+                    <td><a th:href="@{/recipient/delete?recipientName=}+${recipient.name}">delete</a></td>
                 </tr>
                 </tbody>
             </table>

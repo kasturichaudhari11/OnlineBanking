@@ -101,7 +101,7 @@ public class TransactionService {
             checkingAccountDao.save(checkingAccount);
 
             Date date = new Date();
-            CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Transfer to recipient " + recipient.getName(), "Transfer", "Finished", checkingAccount);
+            CheckingTransaction checkingTransaction = new CheckingTransaction(-amount, checkingAccount.getBalance(), date, "Transfer to recipient " + recipient.getName(), "Transfer", "Finished", checkingAccount);
             checkingTransactionDao.save(checkingTransaction);
        
 		} else if (accountType.equalsIgnoreCase("Savings")) {
@@ -111,7 +111,7 @@ public class TransactionService {
 
             Date date = new Date();
 
-            SavingsTransaction savingsTransaction = new SavingsTransaction(amount, savingsAccount.getBalance(), date, "Transfer to recipient " + recipient.getName(), "Transfer", "Finished", savingsAccount);
+            SavingsTransaction savingsTransaction = new SavingsTransaction(-amount, savingsAccount.getBalance(), date, "Transfer to recipient " + recipient.getName(), "Transfer", "Finished", savingsAccount);
             savingsTransactionDao.save(savingsTransaction);
         }
     }
