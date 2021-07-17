@@ -47,20 +47,20 @@ public class CheckbookRequestService {
 		return savingsCheckbookDao.save(savingsCheckbook);
 	}
 	
-	public CheckingCheckbookRequest requestNewCheckingCheckbook(String type, String pages, String username) {
+	public void requestNewCheckbook(String accountType, String checkbookType, String pages, String username) {
 
-		User user = userService.findByUsername(username);
-			
-		CheckingCheckbook checkingCheckbook = new CheckingCheckbook(Integer.parseInt(pages), type, user.getCheckingAccount());
-		return requestNewCheckingCheckbook(checkingCheckbook);
-	}
-
-	public SavingsCheckbookRequest requestNewSavingsCheckbook(String type, String pages, String username) {
-	
 		User user = userService.findByUsername(username);
 		
-		SavingsCheckbook savingsCheckbook = new SavingsCheckbook(Integer.parseInt(pages), type, user.getSavingsAccount());
-		return requestNewSavingsCheckbook(savingsCheckbook);
+		if (accountType.equalsIgnoreCase("checking")) {
+			
+			CheckingCheckbook checkingCheckbook = createCheckingCheckbook(new CheckingCheckbook(Integer.parseInt(pages), checkbookType, user.getCheckingAccount()));
+			requestNewCheckingCheckbook(checkingCheckbook);
+	
+		} else if (accountType.equalsIgnoreCase("savings")) {
+			
+			SavingsCheckbook savingsCheckbook = createSavingsCheckbook(new SavingsCheckbook(Integer.parseInt(pages), checkbookType, user.getSavingsAccount()));
+			requestNewSavingsCheckbook(savingsCheckbook);
+		}
 	}
 	
 	public CheckingCheckbookRequest requestNewCheckingCheckbook(CheckingCheckbook ccb) {
