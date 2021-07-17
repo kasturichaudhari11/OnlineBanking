@@ -33,15 +33,6 @@ public class CheckingAccount {
 	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL)
 	private List<CheckingCheckbookRequest> checkingCheckbookRequestList;	
 	
-//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	private List<CheckingTransaction> checkingTransactionList;
-//	
-//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	private List<CheckingCheckbook> checkingCheckbookList;	
-//	
-//	@OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	private List<CheckingCheckbookRequest> checkingCheckbookRequestList;	
-//	
 	public CheckingAccount() {
 		super();
 		// TODO Auto-generated constructor stub

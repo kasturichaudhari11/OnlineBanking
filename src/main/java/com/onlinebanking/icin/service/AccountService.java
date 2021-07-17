@@ -79,12 +79,13 @@ public class AccountService {
             savingsAccountDao.save(savingsAccount);
 
             Date date = new Date();
-            SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Deposit to Savings Account", "Finished", "Account", savingsAccount);
+            SavingsTransaction savingsTransaction = new SavingsTransaction(amount, savingsAccount.getBalance(), date, "Deposit to Savings Account", "Finished", "Account", savingsAccount);
             transactionService.saveSavingsTransaction(savingsTransaction);
         }
     }
 
 	public void withdraw(String accountType, double amount, String username) {
+
 		User user = userService.findByUsername(username);
 		
 		if (accountType.equalsIgnoreCase("Checking")) {
@@ -100,7 +101,7 @@ public class AccountService {
 			
 			Date date = new Date();
 			
-			CheckingTransaction checkingTransaction = new CheckingTransaction(amount, checkingAccount.getBalance(), date, "Withdraw from Checking Account", "Finished", "Account", checkingAccount);
+			CheckingTransaction checkingTransaction = new CheckingTransaction(-amount, checkingAccount.getBalance(), date, "Withdraw from Checking Account", "Finished", "Account", checkingAccount);
 			transactionService.saveCheckingTransaction(checkingTransaction);
 			
 			System.out.println("Transaction completed.");
@@ -112,7 +113,7 @@ public class AccountService {
 			savingsAccountDao.save(savingsAccount);
 			
 			Date date = new Date();
-			SavingsTransaction savingsTransaction = new SavingsTransaction(savingsAccount.getBalance(), amount, date, "Withdraw from Savings Account", "Finished", "Account", savingsAccount);
+			SavingsTransaction savingsTransaction = new SavingsTransaction(-amount, savingsAccount.getBalance(), date, "Withdraw from Savings Account", "Finished", "Account", savingsAccount);
 			transactionService.saveSavingsTransaction(savingsTransaction);
 		}
 	}
