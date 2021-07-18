@@ -10,7 +10,6 @@ import com.onlinebanking.icin.dao.CheckingCheckbookDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
-import com.onlinebanking.icin.dao.UserDao;
 import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.CheckingCheckbook;
 import com.onlinebanking.icin.entity.CheckingCheckbookRequest;

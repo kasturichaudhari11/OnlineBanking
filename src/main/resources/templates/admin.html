@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header" />
+<body roleId="page-top" data-spy="scroll"
+	data-target=".navbar-fixed-top">
+<head th:replace="common/header :: navbar" />
+<div class="container main">
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last name</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Address</th>
+					<th>Phone</th>
+					<th>Role</th>
+					<th>Enabled</th>
+					<th>Update Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="user : ${userList}">
+					<td data-th-text="${user.firstName}">...</td>
+					<td data-th-text="${user.lastName}">...</td>
+					<td data-th-text="${user.username}">...</td>
+					<td data-th-text="${user.email}">...</td>
+					<td data-th-text="${user.address}">...</td>
+					<td data-th-text="${user.phone}">...</td>
+					<td data-th-text="${user.role}">...</td>
+					<td data-th-text="${user.enabled}">...</td>
+					<td>
+						<form th:action="@{/admin/toggleStatus}" method="post">
+							<div th:if="${user.role == 'customer'}" class="form-group">
+								<input type="hidden" name="username" id="username" th:value="${user.username}"/>
+								<div th:if="${user.enabled == true}" class="form-group">
+									<button class="btn btn-primary" type="submit">Disable</button>
+								</div>
+								<div th:if="${user.enabled == false}" class="form-group">
+									<button class="btn btn-primary" type="submit">Enable</button>
+								</div>
+							</div>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div th:replace="common/header :: body-bottom-scripts"></div>
+
+</body>
+</html>

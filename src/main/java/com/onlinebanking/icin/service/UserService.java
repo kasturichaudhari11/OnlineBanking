@@ -67,17 +67,18 @@ public class UserService {
         return (List<User>) userDao.findAll();
     }
 
-    public void enableUser(String username) {
+    public User enableUser(String username) {
     	
         User user = findByUsername(username);
         user.setEnabled(true);
-        userDao.save(user);
+        return userDao.save(user);
     }
 
-    public void disableUser(String username) {
+    public User disableUser(String username) {
     	
+    	System.out.println("Disabling User: "+username);
         User user = findByUsername(username);
         user.setEnabled(false);
-        userDao.save(user);
+        return userDao.save(user);
     }    
 }

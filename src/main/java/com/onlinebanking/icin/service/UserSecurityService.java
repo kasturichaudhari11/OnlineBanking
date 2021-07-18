@@ -24,13 +24,16 @@ public class UserSecurityService implements UserDetailsService {
     	
         User user = userDao.findByUsername(username);
         
-        if (user == null) {
+        if (user != null && user.isEnabled()) {
+        	
+        	LOG.info("User {} found and is enabled.", username);
         
-        	LOG.warn("Username {} not found", username);
-            throw new UsernameNotFoundException("Username " + username + " not found");
+        } else {
+        	
+        	LOG.warn("Username {} not found or account is disabled", username);
+            throw new UsernameNotFoundException("Username " + username + " not found or account is disabled");
         }
         
-        LOG.info("User {} found", username);
         return user;
     }
 }

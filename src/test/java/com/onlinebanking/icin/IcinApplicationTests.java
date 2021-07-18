@@ -113,6 +113,12 @@ class IcinApplicationTests {
 		{
 			userService.createUser(user);
 		}
+
+		user = new User("adminUser", bCryptPasswordEncoder.encode("admin"), "AdminFisrt", "AdminLast", "admin@icin.com", "9980873879", "AdminAddress", "admin", true);
+		if (userDao.findByUsername("adminUser") == null)
+		{
+			userService.createUser(user);
+		}
 	}
 	
 	@Test

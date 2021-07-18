@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html 
+	xmlns:th="http://www.w3.org/1999/xhtml" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:fragment="common-header">
 
     <meta charset="utf-8"/>
@@ -18,7 +20,7 @@
 
 <div th:fragment="navbar">
 	<div class="banner">
-		<img alt="bannerimg" src="/images/money-plants.jpg"/  width="100%" height="100px"/>
+		<img alt="bannerimg" src="/images/money-plants.jpg"  width="100%" height="100px"/>
 		<div class="banner-text-left"> ICIN Bank </div>
 	</div>
     <nav class="navbar navbar-default " role="navigation">
@@ -32,7 +34,6 @@
                 </button>
                 <a class="navbar-brand page-scroll" th:href="@{/homepage}">Home</a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse  navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
@@ -68,6 +69,18 @@
                         </ul>
                     </li>
                 </ul>
+                <div sec:authorize="hasAuthority('ADMIN')">
+	                <ul class="nav navbar-nav">
+	                    <li class="dropdown">
+	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+	                           aria-expanded="false">AdminTask <span class="caret"></span></a>
+	                        <ul class="dropdown-menu">
+	                            <li><a th:href="@{/admin}">Change User Status</a></li>
+	                            <li><a th:href="@{/admin/approveCheckbook}">Approve Checkbook requests</a></li>
+	                        </ul>
+	                    </li>
+	                </ul>
+                </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -80,9 +93,7 @@
                     </li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container -->
     </nav>
 </div>
 
