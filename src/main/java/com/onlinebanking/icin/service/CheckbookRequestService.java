@@ -1,5 +1,6 @@
 package com.onlinebanking.icin.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class CheckbookRequestService {
 		return savingsCheckbookRequestDao.save(new SavingsCheckbookRequest((new Date()).toString(), "Pending", scb.getSavingsAccount(), scb));
 	}
 	
-	public void approveNewCheckingCheckbookRequest(CheckingAccount ca, User authorizer, boolean approve) {
+	public void approveAllNewCheckingCheckbookRequest(CheckingAccount ca, User authorizer, boolean approve) {
 		
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
@@ -96,8 +97,44 @@ public class CheckbookRequestService {
 			}
 		}
 	}
+
+	public void approveNewCheckingCheckbookRequest(Integer requestId, User authorizer) {
+		
+		if (authorizer.getRole().equalsIgnoreCase("admin")) {
+			
+			CheckingCheckbookRequest ccr= checkingCheckbookRequestDao.findById(requestId).get();
+			
+			if (!ccr.isRequestApproved()) {
+					
+					System.out.println("Approved");
+					ccr.setRequestApproved(true);
+					ccr.setAuthorizer(authorizer);
+					ccr.setDateApproved((new Date()).toString());
+					ccr.setStatus("Approved");
+					checkingCheckbookRequestDao.save(ccr);
+			}
+		}
+	}
+
+	public void approveNewSavingsCheckbookRequest(Integer requestId, User authorizer) {
+		
+		if (authorizer.getRole().equalsIgnoreCase("admin")) {
+			
+			SavingsCheckbookRequest ccr= savingsCheckbookRequestDao.findById(requestId).get();
+			
+			if (!ccr.isRequestApproved()) {
+				
+				System.out.println("Approved");
+				ccr.setRequestApproved(true);
+				ccr.setAuthorizer(authorizer);
+				ccr.setDateApproved((new Date()).toString());
+				ccr.setStatus("Approved");
+				savingsCheckbookRequestDao.save(ccr);
+			}
+		}
+	}
 	
-	public void approveNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer, boolean approve) {
+	public void approveAllNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer, boolean approve) {
 		
 		System.out.println("Authorizer" + authorizer.getUsername() + " role: " + authorizer.getRole());
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
@@ -116,5 +153,25 @@ public class CheckbookRequestService {
 				}
 			}
 		}
+	}
+	
+	public List<CheckingCheckbookRequest> findCheckingCheckbookRequests() {
+		
+		return (List<CheckingCheckbookRequest>) checkingCheckbookRequestDao.findAll();
+	}
+	
+	public CheckingCheckbookRequest findCheckingCheckbookRequestById(Integer requestId) {
+	
+		return checkingCheckbookRequestDao.findById(requestId).get();
+	}
+	
+	public List<SavingsCheckbookRequest> findSavingsCheckbookRequests() {
+		
+		return (List<SavingsCheckbookRequest>) savingsCheckbookRequestDao.findAll();
+	}
+	
+	public SavingsCheckbookRequest findSavingsCheckbookRequestById(Integer requestId) {
+		
+		return savingsCheckbookRequestDao.findById(requestId).get();
 	}
 }

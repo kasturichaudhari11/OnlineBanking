@@ -545,19 +545,19 @@ class IcinApplicationTests {
 		user = userDao.findByUsername("username3");
 		ca = user.getCheckingAccount();
 	
-		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, unauthorizedUser, true);
+		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, unauthorizedUser, true);
 		List<CheckingCheckbookRequest> ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
 
 		for (CheckingCheckbookRequest ccbr: ccbrList)
 			assertFalse(ccbr.isRequestApproved());
 		
-		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, authorizedUser, false);
+		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, authorizedUser, false);
 		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
 		
 		for (CheckingCheckbookRequest ccbr: ccbrList)
 			assertFalse(ccbr.isRequestApproved());
 
-		checkbookRequestService.approveNewCheckingCheckbookRequest(ca, authorizedUser, true);
+		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, authorizedUser, true);
 		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
 
 		for (CheckingCheckbookRequest ccbr: ccbrList)
@@ -583,19 +583,19 @@ class IcinApplicationTests {
 		user = userDao.findByUsername("username3");
 		sa = user.getSavingsAccount();
 	
-		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, unauthorizedUser, true);
+		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, unauthorizedUser, true);
 		List<SavingsCheckbookRequest> ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
 
 		for (SavingsCheckbookRequest scbr: ccbrList)
 			assertFalse(scbr.isRequestApproved());
 		
-		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, authorizedUser, false);
+		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, authorizedUser, false);
 		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
 		
 		for (SavingsCheckbookRequest scbr: ccbrList)
 			assertFalse(scbr.isRequestApproved());
 
-		checkbookRequestService.approveNewSavingsCheckbookRequest(sa, authorizedUser, true);
+		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, authorizedUser, true);
 		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
 
 		for (SavingsCheckbookRequest scbr: ccbrList)
