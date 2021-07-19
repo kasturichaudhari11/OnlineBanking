@@ -74,35 +74,12 @@ public class CheckbookRequestService {
 		return savingsCheckbookRequestDao.save(new SavingsCheckbookRequest((new Date()).toString(), "Pending", scb.getSavingsAccount(), scb));
 	}
 	
-	public void approveAllNewCheckingCheckbookRequest(CheckingAccount ca, User authorizer, boolean approve) {
+	public CheckingCheckbookRequest approveNewCheckingCheckbookRequest(Integer requestId, User authorizer) {
 		
-		if (authorizer.getRole().equalsIgnoreCase("admin")) {
-			
-			List<CheckingCheckbookRequest> ccrList = ca.getCheckingCheckbookRequestList();
-			System.out.println("checkingBook request approval by "+authorizer.getUsername());
-			System.out.println("checkingBook request list:  "+ccrList);
-			
-			for (CheckingCheckbookRequest ccr: ccrList) {
-				
-				System.out.println("ProcessingCCR: "+ccr);
-				if (!ccr.isRequestApproved() && approve) {
-					
-					System.out.println("Approved");
-					ccr.setRequestApproved(true);
-					ccr.setAuthorizer(authorizer);
-					ccr.setDateApproved((new Date()).toString());
-					ccr.setStatus("Approved");
-					checkingCheckbookRequestDao.save(ccr);
-				}
-			}
-		}
-	}
+		CheckingCheckbookRequest ccr = checkingCheckbookRequestDao.findById(requestId).get();
 
-	public void approveNewCheckingCheckbookRequest(Integer requestId, User authorizer) {
-		
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
-			CheckingCheckbookRequest ccr= checkingCheckbookRequestDao.findById(requestId).get();
 			
 			if (!ccr.isRequestApproved()) {
 					
@@ -114,45 +91,29 @@ public class CheckbookRequestService {
 					checkingCheckbookRequestDao.save(ccr);
 			}
 		}
+		
+		return ccr;
 	}
 
-	public void approveNewSavingsCheckbookRequest(Integer requestId, User authorizer) {
+	public SavingsCheckbookRequest approveNewSavingsCheckbookRequest(Integer requestId, User authorizer) {
 		
+		SavingsCheckbookRequest scr = savingsCheckbookRequestDao.findById(requestId).get();
+
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
-			SavingsCheckbookRequest ccr= savingsCheckbookRequestDao.findById(requestId).get();
 			
-			if (!ccr.isRequestApproved()) {
+			if (!scr.isRequestApproved()) {
 				
 				System.out.println("Approved");
-				ccr.setRequestApproved(true);
-				ccr.setAuthorizer(authorizer);
-				ccr.setDateApproved((new Date()).toString());
-				ccr.setStatus("Approved");
-				savingsCheckbookRequestDao.save(ccr);
+				scr.setRequestApproved(true);
+				scr.setAuthorizer(authorizer);
+				scr.setDateApproved((new Date()).toString());
+				scr.setStatus("Approved");
+				scr = savingsCheckbookRequestDao.save(scr);
 			}
 		}
-	}
-	
-	public void approveAllNewSavingsCheckbookRequest(SavingsAccount sa, User authorizer, boolean approve) {
 		
-		System.out.println("Authorizer" + authorizer.getUsername() + " role: " + authorizer.getRole());
-		if (authorizer.getRole().equalsIgnoreCase("admin")) {
-			
-			List<SavingsCheckbookRequest> scrList = sa.getSavingsCheckbookRequestList();
-			
-			for (SavingsCheckbookRequest scr: scrList) {
-				
-				if (!scr.isRequestApproved() && approve) {
-					
-					scr.setRequestApproved(true);
-					scr.setAuthorizer(authorizer);
-					scr.setDateApproved((new Date()).toString());
-					scr.setStatus("Approved");
-					savingsCheckbookRequestDao.save(scr);
-				}
-			}
-		}
+		return scr;
 	}
 	
 	public List<CheckingCheckbookRequest> findCheckingCheckbookRequests() {

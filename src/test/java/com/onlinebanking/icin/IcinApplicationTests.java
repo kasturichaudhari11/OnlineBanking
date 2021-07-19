@@ -472,8 +472,8 @@ class IcinApplicationTests {
 		Double checkingBalance = ca.getBalance();
 		
 		Recipient recipient = new Recipient("RecpientName", "rec.name@email.com", "6479388478", ca.getNumber().toString(), "Settle splitwise", user);
-		recDao.save(recipient);
-		recipient = recDao.findById(1).get();
+		if (recDao.findByName(recipient.getName()) == null) recDao.save(recipient);
+		recipient = recDao.findByName(recipient.getName());
 		
 		transactionService.transferToRecipient(recipient, "Checking", 100.00, ca, sa);
 		
@@ -555,25 +555,23 @@ class IcinApplicationTests {
 		user = userDao.findByUsername("username3");
 		ca = user.getCheckingAccount();
 	
-		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, unauthorizedUser, true);
-		List<CheckingCheckbookRequest> ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
-
-		for (CheckingCheckbookRequest ccbr: ccbrList)
-			assertFalse(ccbr.isRequestApproved());
+		List<CheckingCheckbookRequest> ccbrList = ca.getCheckingCheckbookRequestList();
 		
-		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, authorizedUser, false);
-		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
-		
-		for (CheckingCheckbookRequest ccbr: ccbrList)
-			assertFalse(ccbr.isRequestApproved());
-
-		checkbookRequestService.approveAllNewCheckingCheckbookRequest(ca, authorizedUser, true);
-		ccbrList = userDao.findByUsername("username3").getCheckingAccount().getCheckingCheckbookRequestList();
-
 		for (CheckingCheckbookRequest ccbr: ccbrList)
 		{
-			assertTrue(ccbr.isRequestApproved());
-			assertEquals(authorizedUser.getUsername(), ccbr.getAuthorizer().getUsername());
+			if(!ccbr.isRequestApproved()) {
+			
+				ccbr =  checkbookRequestService.approveNewCheckingCheckbookRequest(ccbr.getId(), unauthorizedUser);
+				assertFalse(ccbr.isRequestApproved());
+			}
+		}		
+		for (CheckingCheckbookRequest ccbr: ccbrList)
+		{
+			if(!ccbr.isRequestApproved()) {
+
+				ccbr =  checkbookRequestService.approveNewCheckingCheckbookRequest(ccbr.getId(), authorizedUser);
+				assertTrue(ccbr.isRequestApproved());
+			}
 		}
 	}
 
@@ -592,26 +590,25 @@ class IcinApplicationTests {
 
 		user = userDao.findByUsername("username3");
 		sa = user.getSavingsAccount();
-	
-		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, unauthorizedUser, true);
-		List<SavingsCheckbookRequest> ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
-
-		for (SavingsCheckbookRequest scbr: ccbrList)
-			assertFalse(scbr.isRequestApproved());
 		
-		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, authorizedUser, false);
-		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
+		List<SavingsCheckbookRequest> scbrList = sa.getSavingsCheckbookRequestList();
+
 		
-		for (SavingsCheckbookRequest scbr: ccbrList)
-			assertFalse(scbr.isRequestApproved());
-
-		checkbookRequestService.approveAllNewSavingsCheckbookRequest(sa, authorizedUser, true);
-		ccbrList = userDao.findByUsername("username3").getSavingsAccount().getSavingsCheckbookRequestList();
-
-		for (SavingsCheckbookRequest scbr: ccbrList)
+		for (SavingsCheckbookRequest scbr: scbrList)
 		{
-			assertTrue(scbr.isRequestApproved());
-			assertEquals(authorizedUser.getUsername(), scbr.getAuthorizer().getUsername());
+			if(!scbr.isRequestApproved()) {
+				scbr = checkbookRequestService.approveNewSavingsCheckbookRequest(scbr.getId(), unauthorizedUser);
+				assertFalse(scbr.isRequestApproved());
+			}
+		}
+		
+		for (SavingsCheckbookRequest scbr: scbrList)
+		{
+			if(!scbr.isRequestApproved()) {
+				
+				scbr = checkbookRequestService.approveNewSavingsCheckbookRequest(scbr.getId(), authorizedUser);
+				assertTrue(scbr.isRequestApproved());
+			}
 		}
 	}
 }
