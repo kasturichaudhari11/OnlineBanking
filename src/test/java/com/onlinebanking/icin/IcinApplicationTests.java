@@ -9,9 +9,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.onlinebanking.icin.dao.CheckingAccountDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookDao;
@@ -38,8 +42,14 @@ import com.onlinebanking.icin.service.CheckbookRequestService;
 import com.onlinebanking.icin.service.TransactionService;
 import com.onlinebanking.icin.service.UserService;
 
-//@Sql({"/populateAccounts.sql", "/populateTransactions.sql"})
-@SpringBootTest
+@RunWith(SpringRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = IcinApplication.class)
+//@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations="/application-test.properties")
+//@TestPropertySource(properties = {"jdbc.driverClassName=org.h2.Driver", "jdbc.url=jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1", "hibernate.dialect=org.hibernate.dialect.H2Dialect", "hibernate.hbm2ddl.auto=create-drop"})
+@ActiveProfiles("test")
+//@SpringBootTest
 class IcinApplicationTests {
 
 	@Autowired

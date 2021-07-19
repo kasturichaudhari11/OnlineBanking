@@ -1,6 +1,7 @@
 package com.onlinebanking.icin.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ import com.onlinebanking.icin.entity.User;
 @Service
 public class AccountService {
 
-	private static Integer currentAccoutNumber = 314001000;
+	private static Integer currentCheckingAccoutNumber = 314001000;
+	private static Integer currentSavingsAccoutNumber = 514001000;
 	
 	@Autowired
 	private CheckingAccountDao checkingAccountDao;
@@ -30,14 +32,40 @@ public class AccountService {
 	@Autowired
 	private TransactionService transactionService;
 	
-	private Integer getNextAvailableAccountNumber() {
+	private Integer getNextAvailableCheckingAccountNumber() {
 		
-		return ++currentAccoutNumber;
+		List<CheckingAccount> caList = (List<CheckingAccount>) checkingAccountDao.findAll();
+		
+		for (CheckingAccount ca : caList) {
+			
+			if (ca.getNumber() > currentCheckingAccoutNumber) {
+				
+				currentCheckingAccoutNumber = ca.getNumber();
+			}
+		}
+		
+		return ++currentCheckingAccoutNumber;
+	}
+	
+	
+	private Integer getNextAvailableSavingsAccountNumber() {
+
+		List<SavingsAccount> saList = (List<SavingsAccount>) savingsAccountDao.findAll();
+
+		for (SavingsAccount sa : saList) {
+			
+			if (sa.getNumber() > currentSavingsAccoutNumber) {
+				
+				currentSavingsAccoutNumber = sa.getNumber();
+			}
+		}
+
+		return ++currentSavingsAccoutNumber;
 	}
 	
 	public CheckingAccount createCheckingAccount() {
 		
-		CheckingAccount checkingAccount = new CheckingAccount(getNextAvailableAccountNumber(), 0.0);
+		CheckingAccount checkingAccount = new CheckingAccount(getNextAvailableCheckingAccountNumber(), 0.0);
 		checkingAccountDao.save(checkingAccount);
 		
 		return checkingAccountDao.findByNumber(checkingAccount.getNumber());
@@ -45,7 +73,7 @@ public class AccountService {
 	
 	public SavingsAccount createSavingsAccount() {
 		
-		SavingsAccount savingsAccount = new SavingsAccount(getNextAvailableAccountNumber(), 0.0);
+		SavingsAccount savingsAccount = new SavingsAccount(getNextAvailableSavingsAccountNumber(), 0.0);
 		savingsAccountDao.save(savingsAccount);
 		
 		return savingsAccountDao.findByNumber(savingsAccount.getNumber());

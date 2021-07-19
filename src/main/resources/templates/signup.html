@@ -2,17 +2,20 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="common/header :: common-header"/>
 <body roleId="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-<head th:replace="common/header :: navbar"/>
+<head th:replace="common/header :: navbar" />
 <div class="container">
     <div class="row main">
-        <div class="col-md-6">
-            <h2 class="title">My Profile</h2>
-            <hr/>
-            <form method="post" th:action="@{/user/profile}">
-                <input type="hidden" name="id" th:value="${user.userId}"/>
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Sign Up</h1>
+                <hr/>
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal" method="post" th:action="@{/signup}">
 
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
+                    <label for="firstName" class="cols-sm-2 control-label">First Name</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -51,21 +54,20 @@
                         class="bg-danger pull-right" th:if="${emailExists}">Email already exists</span>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope fa"
-                                                                   aria-hidden="true"></i></span>
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" th:value="${user.email}" id="email" name="email"
                                    roleId="email" placeholder="Enter your Email" required="required"/>
                         </div>
                     </div>
                 </div>
                 
-              <div class="form-group">
+                <div class="form-group">
                     <label for="address" class="cols-sm-2 control-label">Address</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" th:value="${user.address}" id="address"
-                                   name="address" roleId="lastName" placeholder="Enter your address"
+                                   name="address" roleId="address" placeholder="Enter your Address"
                                    required="required"/>
                         </div>
                     </div>
@@ -84,34 +86,33 @@
                     </div>
                 </div>
 
-                <div class="form-group ">
-                    <button type="submit" class="btn btn-checking btn-block ">Change Settings
-                    </button>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" th:value="${user.password}" id="password"
+                                   name="password" roleId="password" placeholder="Enter your Password"
+                                   required="required"/>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input id="showPassword" type="checkbox"/>Show Password
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-            </form>
-        </div>
-        <div class="col-md-6">
-            <div class="panel-heading">
-                <div class="panel-title text-center">
-                    <h1 class="title">Account Information</h1>
-                    <hr/>
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Sign up!</button>
                 </div>
-                <table class="responstable">
-                    <tr>
-                    	<th>Account Numbers
-	                    	<tr>
-		                        <th>Checking</th>
-		                        <th>Savings</th>
-		                    </tr>
-	                    </th>
-                    </tr>
-                    <tr>
-                        <td data-th-text="${user.checkingAccount.number}">...</td>
-                        <td data-th-text="${user.savingsAccount.number}">...</td>
-                    </tr>
-                </table>
-            </div>
+
+                <hr/>
+
+                <div class="form-group ">
+                    <a class="btn btn-info btn-lg btn-block login-button" th:href="@{/}">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>

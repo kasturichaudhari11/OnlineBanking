@@ -23,3 +23,20 @@
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: xx-large;
 }
+
+/* Modify the backgorund color */
+.navbar-custom {
+    background-color: rgb(0, 174, 255);
+}
+
+ul.nav li a, ul.nav li a:visited {
+  color: black;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+  color: black;
+}
+
+ul.nav li.active a {
+  color: black;
+}

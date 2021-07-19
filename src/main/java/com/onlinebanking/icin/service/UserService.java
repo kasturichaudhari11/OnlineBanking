@@ -3,6 +3,7 @@ package com.onlinebanking.icin.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.onlinebanking.icin.dao.UserDao;
@@ -16,6 +17,9 @@ public class UserService {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public void save(User user) {
     	userDao.save(user);
@@ -36,6 +40,9 @@ public class UserService {
     	if (findUser == null) {
     		
     		System.out.println("User not found");
+    		String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptedPassword);
+            
     		user.setCheckingAccount(accountService.createCheckingAccount());
     		user.setSavingsAccount(accountService.createSavingsAccount());
     		

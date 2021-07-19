@@ -21,42 +21,7 @@ import com.onlinebanking.icin.service.UserSecurityService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//	 private static final String[] ANT_MATCHERS_PERMITT_ALL = {
-//	            "/webjars/**",
-//	            "/css/**",
-//	            "/js/**",
-//	            "/images/**",
-//	            "/",
-//	            "/error/**/*",
-//	            "/signup"
-//	    };
-//	   
-//	    private static final String[] ANT_MATCHERS_ADMIN = {
-//	    		"/admin/**"
-//	    };
-//	    
-//	    @Autowired
-//	    private UserSecurityService userSecurityService;
-//
-//	    
-//	    @Override
-//	    protected void configure(HttpSecurity http) throws Exception {
-//	        http.authorizeRequests()
-////	            .antMatchers(ANT_MATCHERS_ADMIN).access("hasRole('ADMIN')").
-////	            .antMatchers(ANT_MATCHERS_PERMITTED).access("hasRole('CUSTOMER')")
-////	            .antMatchers("/homepage", "/**", "/transfer/**").access("hasRole('ADMIN')")
-//	        	.antMatchers(ANT_MATCHERS_PERMITT_ALL).permitAll()
-//	        	.antMatchers(ANT_MATCHERS_ADMIN).access("hasRole('ADMIN')")
-//	            .anyRequest()
-//	            .authenticated();
-//
-//	        http.csrf().disable().cors().disable()
-//	            .formLogin().failureUrl("/index?error").defaultSuccessUrl("/homepage").loginPage("/index").permitAll()
-//	            .and()
-//	            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/index?logout").deleteCookies("remember-me").permitAll()
-//	            .and()
-//	            .rememberMe();
-//	    }
+
     private static final String[] ANT_MATCHERS_PERMITTED = {
             "/webjars/**",
             "/css/**",
