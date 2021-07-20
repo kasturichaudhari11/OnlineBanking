@@ -43,13 +43,9 @@ import com.onlinebanking.icin.service.TransactionService;
 import com.onlinebanking.icin.service.UserService;
 
 @RunWith(SpringRunner.class)
-//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = IcinApplication.class)
-//@TestPropertySource(locations="classpath:application-test.properties")
 @TestPropertySource(locations="/application-test.properties")
-//@TestPropertySource(properties = {"jdbc.driverClassName=org.h2.Driver", "jdbc.url=jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1", "hibernate.dialect=org.hibernate.dialect.H2Dialect", "hibernate.hbm2ddl.auto=create-drop"})
 @ActiveProfiles("test")
-//@SpringBootTest
 class IcinApplicationTests {
 
 	@Autowired
@@ -100,13 +96,13 @@ class IcinApplicationTests {
 	@BeforeEach
 	void createUsers() {
 		
-		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "admin", true);
+		User user = new User("username1", bCryptPasswordEncoder.encode("password1"), "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "admin", true);
 		if (userDao.findByUsername("username1") == null)
 		{
 			userService.createUser(user);
 		}
 
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		user = new User("username2", bCryptPasswordEncoder.encode("password2"), "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 		if (userDao.findByUsername("username2") == null)
 		{
 			userService.createUser(user);
@@ -118,7 +114,7 @@ class IcinApplicationTests {
 			userService.createUser(user);
 		}
 		
-		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+		user = new User("username4", bCryptPasswordEncoder.encode("password4"), "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
 		if (userDao.findByUsername("username4") == null)
 		{
 			userService.createUser(user);
@@ -231,7 +227,7 @@ class IcinApplicationTests {
 	void addNewUser() {
  
 		Long currentUserCount = userDao.count();
-		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+		User user = new User("username1", bCryptPasswordEncoder.encode("password1"), "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
 		if (userDao.findByUsername("username1") == null)
 		{
 			userService.createUser(user);
@@ -239,7 +235,7 @@ class IcinApplicationTests {
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 
-		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+		user = new User("username2", bCryptPasswordEncoder.encode("password2"), "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 		if (userDao.findByUsername("username2") == null)
 		{
 			userService.createUser(user);
@@ -247,7 +243,7 @@ class IcinApplicationTests {
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 		
-		user = new User("username5", "password5", "firstName5", "lastName5", "first5.last5@email.com", "8379433838", "Address5", "admin", true);
+		user = new User("username5", bCryptPasswordEncoder.encode("password5"), "firstName5", "lastName5", "first5.last5@email.com", "8379433838", "Address5", "admin", true);
 		if (userDao.findByUsername("username5") == null)
 		{
 			userService.createUser(user);
@@ -255,7 +251,7 @@ class IcinApplicationTests {
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
 		
-		user = new User("username6", "password6", "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "customer", true);
+		user = new User("username6", bCryptPasswordEncoder.encode("password6"), "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "customer", true);
 		if (userDao.findByUsername("username6") == null)
 		{
 			userService.createUser(user);
@@ -301,9 +297,9 @@ class IcinApplicationTests {
 	@Test
 	void depositToCheckingAccount() {
 
-//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		User user = new User("username1", bCryptPasswordEncoder.encode("password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
 //		userService.createUser(user);
-//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		user = new User("username2", bCryptPasswordEncoder.encode("password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 //		userService.createUser(user);
 		
 		User user = userDao.findByUsername("username2");
@@ -322,9 +318,9 @@ class IcinApplicationTests {
 	@Test
 	void depositToSavingsAccount() {
 		
-//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		User user = new User("username1", bCryptPasswordEncoder.encode("password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
 //		userService.createUser(user);
-//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		user = new User("username2", bCryptPasswordEncoder.encode("password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 //		userService.createUser(user);
 		
 		User user = userDao.findByUsername("username2");
@@ -342,12 +338,12 @@ class IcinApplicationTests {
 	@Test
 	void withdrawFromCheckingAccount() {
 
-//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		User user = new User("username3", bCryptPasswordEncoder.encode("password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
 //		if (userDao.findByUsername("username3") == null)
 //		{
 //			userService.createUser(user);
 //		}
-//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		user = new User("username4", bCryptPasswordEncoder.encode("password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
 //		if (userDao.findByUsername("username4") == null)
 //		{
 //			userService.createUser(user);
@@ -373,12 +369,12 @@ class IcinApplicationTests {
 	@Test
 	void withdrawFromSavingsAccount() {
 		
-//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		User user = new User("username3", bCryptPasswordEncoder.encode("password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
 //		if (userDao.findByUsername("username3") == null)
 //		{
 //			userService.createUser(user);
 //		}
-//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		user = new User("username4", bCryptPasswordEncoder.encode("password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
 //		if (userDao.findByUsername("username4") == null)
 //		{
 //			userService.createUser(user);
@@ -447,16 +443,16 @@ class IcinApplicationTests {
 	void transferToRecipient() {
 		
 		
-//		User user = new User("username1", "password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
+//		User user = new User("username1", bCryptPasswordEncoder.encode("password1", "firstName1", "lastName1", "first.last@email.com", "8379478838", "Address1", "customer", true);
 //		userService.createUser(user);
-//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		user = new User("username2", bCryptPasswordEncoder.encode("password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 //		userService.createUser(user);
 //	
 //		User user2 = userDao.findByUsername("username1");
 //		CheckingAccount ca2 = user2.getCheckingAccount();
 //		User user = userDao.findByUsername("username2");
 //		if (user == null) System.out.println("***********No user found.******");
-//		user = new User("username2", "password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
+//		user = new User("username2", bCryptPasswordEncoder.encode("password2", "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 //		userService.createUser(user);
 		User user = userDao.findByUsername("username2");
 		CheckingAccount ca = user.getCheckingAccount();
@@ -486,12 +482,12 @@ class IcinApplicationTests {
 	@Test
 	void requestCheckingCheckbook() {
 		
-//		User user = new User("username3", "password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
+//		User user = new User("username3", bCryptPasswordEncoder.encode("password3", "firstName3", "lastName3", "first.last@email.com", "8379478838", "Address3", "customer", true);
 //		if (userDao.findByUsername("username3") == null)
 //		{
 //			userService.createUser(user);
 //		}
-//		user = new User("username4", "password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
+//		user = new User("username4", bCryptPasswordEncoder.encode("password4", "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
 //		if (userDao.findByUsername("username4") == null)
 //		{
 //			userService.createUser(user);

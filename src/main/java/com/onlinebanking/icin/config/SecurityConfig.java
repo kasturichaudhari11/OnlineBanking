@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.onlinebanking.icin.service.UserSecurityService;
@@ -64,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
    //https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt	    
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
 
     	return new BCryptPasswordEncoder();
     }
