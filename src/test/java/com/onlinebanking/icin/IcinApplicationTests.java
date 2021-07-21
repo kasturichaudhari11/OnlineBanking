@@ -101,30 +101,35 @@ class IcinApplicationTests {
 		{
 			userService.createUser(user);
 		}
-
+		System.out.println(user.getUsername() + ": " + user.getPassword());
+		
 		user = new User("username2", bCryptPasswordEncoder.encode("password2"), "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 		if (userDao.findByUsername("username2") == null)
 		{
 			userService.createUser(user);
 		}
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 		
 		user = new User("username3", bCryptPasswordEncoder.encode("password3"), "firstName3", "lastName3", "first3.last3@email.com", "8379478838", "Address3", "customer", true);
 		if (userDao.findByUsername("username3") == null)
 		{
 			userService.createUser(user);
 		}
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 		
 		user = new User("username4", bCryptPasswordEncoder.encode("password4"), "firstName4", "lastName4", "first4.last4@email.com", "9379479938", "Address4", "customer", true);
 		if (userDao.findByUsername("username4") == null)
 		{
 			userService.createUser(user);
 		}
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 
 		user = new User("adminUser", bCryptPasswordEncoder.encode("admin"), "AdminFisrt", "AdminLast", "admin@icin.com", "9980873879", "AdminAddress", "admin", true);
 		if (userDao.findByUsername("adminUser") == null)
 		{
 			userService.createUser(user);
 		}
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 	}
 	
 	@Test
@@ -234,6 +239,7 @@ class IcinApplicationTests {
 			currentUserCount++;
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 
 		user = new User("username2", bCryptPasswordEncoder.encode("password2"), "firstName2", "lastName2", "first2.last2@email.com", "9379479938", "Address2", "customer", true);
 		if (userDao.findByUsername("username2") == null)
@@ -242,6 +248,7 @@ class IcinApplicationTests {
 			currentUserCount++;
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 		
 		user = new User("username5", bCryptPasswordEncoder.encode("password5"), "firstName5", "lastName5", "first5.last5@email.com", "8379433838", "Address5", "admin", true);
 		if (userDao.findByUsername("username5") == null)
@@ -250,6 +257,7 @@ class IcinApplicationTests {
 			currentUserCount++;
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 		
 		user = new User("username6", bCryptPasswordEncoder.encode("password6"), "firstName6", "lastName6", "first6.last6@email.com", "9379479938", "Address6", "customer", true);
 		if (userDao.findByUsername("username6") == null)
@@ -258,6 +266,7 @@ class IcinApplicationTests {
 			currentUserCount++;
 		}
 		assertEquals(currentUserCount, (Long)userDao.count());
+		System.out.println(user.getUsername() + ": " + user.getPassword());
 	}
 	
 	@Test
