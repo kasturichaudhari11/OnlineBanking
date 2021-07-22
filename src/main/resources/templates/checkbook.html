@@ -8,7 +8,7 @@
 	<div class="row">
 		<h3>List of checkbook requests for Checking account</h3>
 		<div class="table-responsive">
-			<table class="table table-bordered table-hover table-striped">
+			<table id="checkbookTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th>Checkbook Type</th>
@@ -58,6 +58,10 @@
 </div>
 
 <div th:replace="common/header :: body-bottom-scripts"></div>
-
+<script>
+    $(document).ready(function () {
+        $('#checkbookTable').DataTable();
+    });
+</script>
 </body>
 </html>

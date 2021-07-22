@@ -52,7 +52,7 @@
     <div class="row">
         <h3>List of Recipients</h3>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped">
+            <table id="recipientTable" class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
                     <th>Recipient Name</th>
@@ -81,6 +81,10 @@
 
 
 <div th:replace="common/header :: body-bottom-scripts"></div>
-
+<script>
+    $(document).ready(function () {
+        $('#recipientTable').DataTable();
+    });
+</script>
 </body>
 </html>

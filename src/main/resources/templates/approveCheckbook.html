@@ -6,7 +6,7 @@
 <head th:replace="common/header :: navbar" />
 <div class="container main">
 	<div class="table-responsive">
-		<table class="table table-bordered table-hover table-striped">
+		<table id="checkingCheckbook" class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
 					<th>Date Requested</th>
@@ -44,7 +44,7 @@
 	</div>
 	
 	<div class="table-responsive">
-		<table class="table table-bordered table-hover table-striped">
+		<table id="approveCheckbook" class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
 					<th>Date Requested</th>
@@ -83,6 +83,10 @@
 </div>
 
 <div th:replace="common/header :: body-bottom-scripts"></div>
-
+<script>
+    $(document).ready(function () {
+        $('#approveCheckbook').DataTable();
+    });
+</script>
 </body>
 </html>
