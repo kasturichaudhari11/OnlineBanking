@@ -124,12 +124,13 @@ class IcinApplicationTests {
 		}
 		System.out.println(user.getUsername() + ": " + user.getPassword());
 
-		user = new User("adminUser", bCryptPasswordEncoder.encode("admin"), "AdminFisrt", "AdminLast", "admin@icin.com", "9980873879", "AdminAddress", "admin", true);
+		user = new User("adminUser", bCryptPasswordEncoder.encode("admin"), "AdminFirst", "AdminLast", "admin@icin.com", "9980873879", "AdminAddress", "admin", true);
 		if (userDao.findByUsername("adminUser") == null)
 		{
 			userService.createUser(user);
 		}
 		System.out.println(user.getUsername() + ": " + user.getPassword());
+		System.out.println("Password: " + bCryptPasswordEncoder.encode("password"));
 	}
 	
 	@Test

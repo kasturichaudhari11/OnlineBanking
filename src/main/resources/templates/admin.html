@@ -32,7 +32,7 @@
 					<td data-th-text="${user.enabled}">...</td>
 					<td>
 						<form th:action="@{/admin/toggleStatus}" method="post">
-							<div th:if="${user.role == 'customer'}" class="form-group">
+							<div th:if="${(user.role == 'customer') || (user.role == 'CUSTOMER')}" class="form-group">
 								<input type="hidden" name="username" id="username" th:value="${user.username}"/>
 								<div th:if="${user.enabled == true}" class="form-group">
 									<button class="btn btn-primary" type="submit">Disable</button>
