@@ -1,6 +1,7 @@
 package com.onlinebanking.icin.service;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,8 @@ import com.onlinebanking.icin.dao.CheckingCheckbookDao;
 import com.onlinebanking.icin.dao.CheckingCheckbookRequestDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookDao;
 import com.onlinebanking.icin.dao.SavingsCheckbookRequestDao;
-import com.onlinebanking.icin.entity.CheckingAccount;
 import com.onlinebanking.icin.entity.CheckingCheckbook;
 import com.onlinebanking.icin.entity.CheckingCheckbookRequest;
-import com.onlinebanking.icin.entity.SavingsAccount;
 import com.onlinebanking.icin.entity.SavingsCheckbook;
 import com.onlinebanking.icin.entity.SavingsCheckbookRequest;
 import com.onlinebanking.icin.entity.User;
@@ -80,13 +79,14 @@ public class CheckbookRequestService {
 
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
-			
 			if (!ccr.isRequestApproved()) {
 					
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 					System.out.println("Approved");
 					ccr.setRequestApproved(true);
 					ccr.setAuthorizer(authorizer);
-					ccr.setDateApproved((new Date()).toString());
+					ccr.setDateApproved(formatter.format(new Date()));
 					ccr.setStatus("Approved");
 					checkingCheckbookRequestDao.save(ccr);
 			}
