@@ -35,6 +35,9 @@ public class CheckbookRequestService {
 	
 	@Autowired
 	UserService userService;
+	
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
 	public CheckingCheckbook createCheckingCheckbook(CheckingCheckbook checkingCheckbook) {
 
@@ -64,13 +67,13 @@ public class CheckbookRequestService {
 	
 	public CheckingCheckbookRequest requestNewCheckingCheckbook(CheckingCheckbook ccb) {
 		
-		CheckingCheckbookRequest ccr = new CheckingCheckbookRequest((new Date()).toString(), "Pending", ccb.getCheckingAccount(), ccb);
+		CheckingCheckbookRequest ccr = new CheckingCheckbookRequest(formatter.format(new Date()), "Pending", ccb.getCheckingAccount(), ccb);
 		return checkingCheckbookRequestDao.save(ccr);
 	}
 
 	public SavingsCheckbookRequest requestNewSavingsCheckbook(SavingsCheckbook scb) {
 		
-		return savingsCheckbookRequestDao.save(new SavingsCheckbookRequest((new Date()).toString(), "Pending", scb.getSavingsAccount(), scb));
+		return savingsCheckbookRequestDao.save(new SavingsCheckbookRequest(formatter.format(new Date()), "Pending", scb.getSavingsAccount(), scb));
 	}
 	
 	public CheckingCheckbookRequest approveNewCheckingCheckbookRequest(Integer requestId, User authorizer) {
@@ -81,8 +84,6 @@ public class CheckbookRequestService {
 			
 			if (!ccr.isRequestApproved()) {
 					
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 					System.out.println("Approved");
 					ccr.setRequestApproved(true);
 					ccr.setAuthorizer(authorizer);
@@ -101,13 +102,12 @@ public class CheckbookRequestService {
 
 		if (authorizer.getRole().equalsIgnoreCase("admin")) {
 			
-			
 			if (!scr.isRequestApproved()) {
 				
 				System.out.println("Approved");
 				scr.setRequestApproved(true);
 				scr.setAuthorizer(authorizer);
-				scr.setDateApproved((new Date()).toString());
+				scr.setDateApproved(formatter.format(new Date()));
 				scr.setStatus("Approved");
 				scr = savingsCheckbookRequestDao.save(scr);
 			}

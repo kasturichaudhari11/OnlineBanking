@@ -10,7 +10,7 @@
             <form th:action="@{/checkbook/requestCheckbook}" method="post">
                 <!-- <input type="hidden" name="id" th:value="${recipient.id}"/> -->
                 <div class="form-group">
-                    <label for="accountType">Deposit account: </label>
+                    <label for="accountType">Account: </label>
                     <select class="form-control" th:value="${accountType}" name="accountType" id="accountType"
                             required="required">
                         <option disabled="disabled" selected="selected" value=""> -- select your account --</option>
